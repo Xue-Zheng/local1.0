@@ -415,7 +415,15 @@ public class TicketEmailService {
             emailData.put("membershipNumber", eventMember.getMembershipNumber());
             emailData.put("templateCode", "BMM_TICKET");
             emailData.put("notificationType", "EMAIL");
+            // Email provider selection for confirmation emails
+            // Option 1: Force Mailjet (current)
             emailData.put("provider", "MAILJET");  // Force Mailjet
+            
+            // Option 2: Force Stratum (uncomment to use)
+            // emailData.put("provider", "STRATUM");  // Force Stratum
+            
+            // Option 3: Use default from config (uncomment to use)
+            // emailData.put("provider", defaultEmailProvider);  // Use configured provider from application.properties
 
             rabbitTemplate.convertAndSend(emailQueue, emailData);
 
