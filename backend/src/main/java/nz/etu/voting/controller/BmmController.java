@@ -18,14 +18,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.Month;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.io.InputStream;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * BMM Public Controller - Handles BMM member-facing operations
@@ -518,44 +514,10 @@ public class BmmController {
                 // Assign venue based on forumDesc
                 String forumDesc = eventMember.getForumDesc();
                 if (forumDesc != null && !forumDesc.isEmpty()) {
-                    // Load venue configuration to get proper venue name and date
-                    try {
-                        ObjectMapper objectMapper = new ObjectMapper();
-                        InputStream is = getClass().getClassLoader().getResourceAsStream("bmm-venues-config.json");
-                        if (is != null) {
-                            Map<String, Object> venuesConfig = objectMapper.readValue(is, Map.class);
-                            List<Map<String, Object>> venues = (List<Map<String, Object>>) venuesConfig.get("venues");
-                            
-                            // Find matching venue by forumDesc
-                            for (Map<String, Object> venueObj : venues) {
-                                if (forumDesc.equals(venueObj.get("forumDesc"))) {
-                                    String venueName = (String) venueObj.get("venue");
-                                    String dateStr = (String) venueObj.get("date");
-                                    
-                                    // Set the actual venue name
-                                    eventMember.setAssignedVenueFinal(venueName);
-                                    eventMember.setAssignedVenue(venueName);
-                                    
-                                    // Parse and set the date (assuming September 2025)
-                                    LocalDateTime venueDateTime = parseVenueDate(dateStr);
-                                    if (venueDateTime != null) {
-                                        eventMember.setAssignedDatetimeFinal(venueDateTime);
-                                        eventMember.setAssignedDateTime(venueDateTime);
-                                    }
-                                    
-                                    log.info("Assigned venue {} and date {} to member {} based on forum", 
-                                            venueName, dateStr, eventMember.getMembershipNumber());
-                                    break;
-                                }
-                            }
-                        }
-                    } catch (Exception e) {
-                        log.error("Failed to load venue configuration: {}", e.getMessage());
-                        // Fallback to just using forumDesc
-                        eventMember.setAssignedVenueFinal(forumDesc);
-                        eventMember.setAssignedVenue(forumDesc);
-                    }
-                    
+                    eventMember.setAssignedVenueFinal(forumDesc);
+                    eventMember.setAssignedVenue(forumDesc);
+                    log.info("Assigned venue {} to member {} based on forum", forumDesc, eventMember.getMembershipNumber());
+
                     // Assign region if not set
                     if (eventMember.getAssignedRegion() == null || eventMember.getAssignedRegion().isEmpty()) {
                         eventMember.setAssignedRegion(eventMember.getRegionDesc());
@@ -780,30 +742,5 @@ public class BmmController {
             return ResponseEntity.badRequest()
                     .body(ApiResponse.error("Failed to process response: " + e.getMessage()));
         }
-    }
-    
-    // Helper method to parse venue date string (e.g., "Friday 5 September") to LocalDateTime
-    private LocalDateTime parseVenueDate(String dateStr) {
-        try {
-            if (dateStr == null || dateStr.isEmpty()) {
-                return null;
-            }
-            
-            // Parse strings like "Monday 1 September", "Friday 5 September"
-            String[] parts = dateStr.split(" ");
-            if (parts.length >= 3) {
-                int day = Integer.parseInt(parts[1]);
-                String monthStr = parts[2];
-                int year = 2025; // BMM is in 2025
-                
-                Month month = Month.SEPTEMBER; // All BMM events are in September
-                
-                // Default time is 10:30 AM for morning session
-                return LocalDateTime.of(year, month, day, 10, 30);
-            }
-        } catch (Exception e) {
-            log.error("Failed to parse venue date: {}", dateStr, e);
-        }
-        return null;
     }
 }

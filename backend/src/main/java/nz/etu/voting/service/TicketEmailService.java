@@ -21,8 +21,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.io.InputStream;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 //专门的票据邮件服务 - 像电影票一样的体验 + 在会员确认出席后自动发送精美的邮件票据
 @Slf4j
@@ -241,6 +239,8 @@ public class TicketEmailService {
         html.append("<span class=\"info-label\">Event Type:</span>");
         html.append("<span class=\"info-value\">").append(getEventTypeDisplay(event.getEventType())).append("</span>");
         html.append("</div>");
+        // 注释掉显示错误日期和场地的部分
+        /*
         if (event.getEventDate() != null) {
             html.append("<div class=\"info-row\">");
             html.append("<span class=\"info-label\">Date & Time:</span>");
@@ -253,8 +253,10 @@ public class TicketEmailService {
             html.append("<span class=\"info-value\">").append(escapeHtml(event.getVenue())).append("</span>");
             html.append("</div>");
         }
+        */
 
-        // Add session time if available
+        // Add session time if available - 注释掉以避免显示错误信息
+        /*
         String sessionTime = extractSessionTime(eventMember);
         if (sessionTime != null) {
             html.append("<div class=\"info-row\">");
@@ -262,6 +264,7 @@ public class TicketEmailService {
             html.append("<span class=\"info-value\">").append(sessionTime).append("</span>");
             html.append("</div>");
         }
+        */
         html.append("</div>");
 
 //        QR Code Section
@@ -705,43 +708,7 @@ public class TicketEmailService {
             return buildForumVenueMappingEmailContent(eventMember, ticketUrl);
         }
 
-        // Get venue address and timespan from BMM venue configuration
-        String venueAddress = "";
-        String timeSpan = "";
-        
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            InputStream is = getClass().getClassLoader().getResourceAsStream("bmm-venues-config.json");
-            if (is != null) {
-                Map<String, Object> venuesConfig = objectMapper.readValue(is, Map.class);
-                List<Map<String, Object>> venues = (List<Map<String, Object>>) venuesConfig.get("venues");
-                
-                // Find matching venue by forumDesc
-                for (Map<String, Object> venueObj : venues) {
-                    if (forumDesc != null && forumDesc.equals(venueObj.get("forumDesc"))) {
-                        venueAddress = (String) venueObj.get("address");
-                        
-                        // Get timespan based on session time
-                        String sessionTime = extractSessionTime(eventMember);
-                        List<Map<String, Object>> sessions = (List<Map<String, Object>>) venueObj.get("sessions");
-                        if (sessions != null) {
-                            for (Map<String, Object> session : sessions) {
-                                String time = (String) session.get("time");
-                                if (sessionTime.contains(time)) {
-                                    timeSpan = (String) session.get("timeSpan");
-                                    break;
-                                }
-                            }
-                        }
-                        break;
-                    }
-                }
-            }
-        } catch (Exception e) {
-            log.error("Failed to load venue details from config: {}", e.getMessage());
-        }
-
-        // Build the standard template with enhanced information
+        // Build the standard template
         String template = "Kia ora {{name}},\n\n" +
                 "Your attendance for the 2025 E t&#363; Biennial Membership Meeting has been confirmed.\n\n" +
                 "TICKET DETAILS\n" +
@@ -750,10 +717,8 @@ public class TicketEmailService {
                 "Region: {{region}}\n\n" +
                 "MEETING INFORMATION\n" +
                 "Venue: {{assignedVenue}}\n" +
-                "Address: {{venueAddress}}\n" +
                 "Date: {{assignedDate}}\n" +
-                "Session Time: {{sessionTime}}\n" +
-                "Time Span: {{timeSpan}}\n\n" +
+                "Session: {{sessionTime}}\n\n" +
                 "IMPORTANT: You must bring this ticket to the venue for check-in.\n\n" +
                 "Access your digital ticket with QR code here:\n" +
                 "{{ticketUrl}}\n\n" +
@@ -776,12 +741,8 @@ public class TicketEmailService {
                         (eventMember.getRegionDesc() != null ? eventMember.getRegionDesc() : ""))
                 .replace("{{assignedVenue}}", eventMember.getAssignedVenueFinal() != null ?
                         eventMember.getAssignedVenueFinal() : "To be confirmed")
-                .replace("{{venueAddress}}", venueAddress != null && !venueAddress.isEmpty() ? 
-                        venueAddress : "Address to be confirmed")
                 .replace("{{assignedDate}}", formatDate(eventMember.getAssignedDatetimeFinal()))
                 .replace("{{sessionTime}}", extractSessionTime(eventMember))
-                .replace("{{timeSpan}}", timeSpan != null && !timeSpan.isEmpty() ? 
-                        timeSpan : "Time details to be confirmed")
                 .replace("{{ticketUrl}}", ticketUrl);
 
         return content;
@@ -882,9 +843,8 @@ public class TicketEmailService {
 
     // Helper methods
     private String formatDate(LocalDateTime dateTime) {
-        if (dateTime == null) return "Date to be confirmed";
-        // Format as "Friday 5 September" to match the BMM venue config format
-        return dateTime.format(DateTimeFormatter.ofPattern("EEEE d MMMM"));
+        if (dateTime == null) return "TBA";
+        return dateTime.format(DateTimeFormatter.ofPattern("EEEE, MMMM d, yyyy"));
     }
 
     private String formatTime(LocalDateTime dateTime) {
@@ -900,21 +860,6 @@ public class TicketEmailService {
             // For these special forums, return special instructions
             return "Multiple venues and times available - see options below";
         }
-        
-        // Check if member has assignedDatetimeFinal with a specific time
-        if (eventMember.getAssignedDatetimeFinal() != null) {
-            int hour = eventMember.getAssignedDatetimeFinal().getHour();
-            int minute = eventMember.getAssignedDatetimeFinal().getMinute();
-            
-            // Check for standard BMM session times
-            if (hour == 10 && minute == 30) {
-                return "10:30 AM";
-            } else if (hour == 12 && minute == 30) {
-                return "12:30 PM";
-            } else if (hour == 14 && minute == 30) {
-                return "2:30 PM";
-            }
-        }
 
         // Check if member has preferred times JSON
         String preferredTimesJson = eventMember.getPreferredTimesJson();
@@ -925,8 +870,6 @@ public class TicketEmailService {
                     return "10:30 AM";
                 } else if (preferredTimesJson.contains("lunchtime")) {
                     return "12:30 PM";
-                } else if (preferredTimesJson.contains("afternoon")) {
-                    return "2:30 PM";
                 }
             } catch (Exception e) {
                 log.error("Error parsing preferred times JSON: {}", e.getMessage());
