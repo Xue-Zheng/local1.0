@@ -328,7 +328,7 @@ public class TicketEmailService {
                 .replace("'", "&#x27;");
     }
 
-    // TICKET: BMM专用：确认出席时发送ticket
+    // TICKET: BMM专用：确认出席时发送ticket (使用Mailjet)
     public void sendBMMTicketOnConfirmation(EventMember eventMember) {
         try {
             log.info("Processing BMM ticket for member {} who confirmed attendance",
@@ -355,7 +355,7 @@ public class TicketEmailService {
                 // Try to send email ticket
                 try {
                     log.info("Proceeding to send email ticket for member {}", eventMember.getMembershipNumber());
-                    sendBMMTicketEmail(eventMember);
+                    sendBMMTicketEmailWithMailjet(eventMember);
                     log.info("Email ticket sent successfully for member {}", eventMember.getMembershipNumber());
                 } catch (Exception emailError) {
                     // If email sending fails, still keep the ticket as generated
@@ -384,7 +384,56 @@ public class TicketEmailService {
         }
     }
 
-    // EMAIL: BMM邮件版ticket发送
+    // EMAIL: BMM邮件版ticket发送 (确认出席时使用Mailjet)
+    private void sendBMMTicketEmailWithMailjet(EventMember eventMember) {
+        try {
+            log.info("Starting sendBMMTicketEmailWithMailjet for member: {}, email: {}",
+                    eventMember.getMembershipNumber(), eventMember.getPrimaryEmail());
+
+            String ticketUrl = String.format("https://events.etu.nz/ticket?token=%s",
+                    eventMember.getTicketToken());
+            log.info("Generated ticket URL: {}", ticketUrl);
+
+            String subject = String.format("Your BMM Ticket - %s Region",
+                    eventMember.getAssignedRegion() != null ?
+                            eventMember.getAssignedRegion() : eventMember.getRegionDesc());
+            log.info("Email subject: {}", subject);
+
+            String emailContent = buildBMMTicketEmailContentForStratum(eventMember, ticketUrl);
+            log.info("Email content length: {} characters", emailContent.length());
+
+            // Force Mailjet for confirmation emails
+            log.info("Using Mailjet for confirmation ticket email");
+            
+            Map<String, Object> emailData = new HashMap<>();
+            emailData.put("recipient", eventMember.getPrimaryEmail());
+            emailData.put("recipientName", eventMember.getName());
+            emailData.put("subject", subject);
+            emailData.put("content", emailContent);
+            emailData.put("eventMemberId", eventMember.getId());
+            emailData.put("memberId", eventMember.getId());
+            emailData.put("membershipNumber", eventMember.getMembershipNumber());
+            emailData.put("templateCode", "BMM_TICKET");
+            emailData.put("notificationType", "EMAIL");
+            emailData.put("provider", "MAILJET");  // Force Mailjet
+
+            rabbitTemplate.convertAndSend(emailQueue, emailData);
+
+            // Update ticket status
+            eventMember.setTicketStatus("EMAIL_SENT");
+            eventMember.setQrCodeEmailSent(true);
+            eventMember.setLastActivityAt(LocalDateTime.now());
+            eventMemberRepository.save(eventMember);
+            log.info("BMM ticket email sent via Mailjet for member: {}", eventMember.getMembershipNumber());
+
+        } catch (Exception e) {
+            log.error("Failed to send BMM ticket email for member {}: {}",
+                    eventMember.getMembershipNumber(), e.getMessage(), e);
+            throw new RuntimeException("Failed to send BMM ticket email", e);
+        }
+    }
+
+    // EMAIL: BMM邮件版ticket发送 (默认使用配置的provider)
     private void sendBMMTicketEmail(EventMember eventMember) {
         try {
             log.info("Starting sendBMMTicketEmail for member: {}, email: {}",
