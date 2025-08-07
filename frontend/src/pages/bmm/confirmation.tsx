@@ -1028,7 +1028,7 @@ export default function BMMConfirmationPage() {
                                             </h3>
 
                                             {/* Check if this is a forumVenueMapping member */}
-                                            {memberData.forumDesc && (memberData.forumDesc === "Greymouth" || memberData.forumDesc === "Whangarei") ? (
+                                            {memberData.forumDesc && memberData.forumDesc === "Greymouth" ? (
                                                 <>
                                                     <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 mb-4">
                                                         {(() => {
@@ -1037,11 +1037,7 @@ export default function BMMConfirmationPage() {
                                                             let showMorning = false;
                                                             let showLunchtime = false;
 
-                                                            // For Whangarei, always show assigned time
-                                                            if (memberData.forumDesc === "Whangarei") {
-                                                                const assignedTime = getAssignedTime(memberData.forumDesc, memberData.preferredTimesJson);
-                                                                sessionTimeText = `As a member of the ${memberData.forumDesc} forum, you have been assigned to the following venue and time:`;
-                                                            } else if (memberData.preferredTimesJson) {
+                                                            if (memberData.preferredTimesJson) {
                                                                 try {
                                                                     const times = JSON.parse(memberData.preferredTimesJson);
                                                                     if (times.includes('morning')) {
@@ -1099,21 +1095,6 @@ export default function BMMConfirmationPage() {
                                                                                     Friday 12 September •
                                                                                     {showMorning && showLunchtime ? "Sessions: 10:30 AM or 12:30 PM" :
                                                                                         showMorning ? "Session: 10:30 AM" : "Session: 12:30 PM"}
-                                                                                </p>
-                                                                            </div>
-                                                                        </div>
-                                                                    )}
-
-                                                                    {memberData.forumDesc === "Whangarei" && (
-                                                                        <div className="space-y-3">
-                                                                            <div className="bg-white dark:bg-gray-800 rounded-lg p-3">
-                                                                                <p className="font-semibold text-gray-900 dark:text-white">WHANGAREI</p>
-                                                                                <p className="text-sm text-gray-700 dark:text-gray-300">The Barge Showgrounds, 474 Maunu Road, Maunu, Whangarei</p>
-                                                                                <p className="text-sm text-gray-600 dark:text-gray-400">
-                                                                                    Tuesday 9 September • Session: {getAssignedTime(memberData.forumDesc, memberData.preferredTimesJson)}
-                                                                                </p>
-                                                                                <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                                                                                    Time span: {getTimeSpan(getAssignedTime(memberData.forumDesc, memberData.preferredTimesJson))}
                                                                                 </p>
                                                                             </div>
                                                                         </div>
