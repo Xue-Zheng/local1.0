@@ -2,8 +2,8 @@
 // Based on bmm-venues-config.json forumVenueMapping
 
 export const forumVenueOptions = {
-    "Greymouth": ["Hokitika", "Reefton", "Greymouth"],
-    "Whangarei": ["Whangarei"]  // Kaitaia venue cancelled
+    "Greymouth": ["Hokitika", "Reefton", "Greymouth"]
+    // Whangarei removed - now uses standard venue assignment
 };
 
 export const hasMultipleVenues = (forumDesc) => {
