@@ -688,7 +688,7 @@ public class TicketEmailService {
         // Check if this is a forumVenueMapping member
         String forumDesc = eventMember.getForumDesc();
         boolean isForumVenueMapping = forumDesc != null &&
-                (forumDesc.equals("Greymouth") || forumDesc.equals("Whangarei"));
+                forumDesc.equals("Greymouth");
 
         if (isForumVenueMapping) {
             // Build special template for forumVenueMapping members
@@ -843,7 +843,7 @@ public class TicketEmailService {
     private String extractSessionTime(EventMember eventMember) {
         // First check if this is a forumVenueMapping member
         String forumDesc = eventMember.getForumDesc();
-        if (forumDesc != null && (forumDesc.equals("Greymouth") || forumDesc.equals("Whangarei"))) {
+        if (forumDesc != null && forumDesc.equals("Greymouth")) {
             // For these special forums, return special instructions
             return "Multiple venues and times available - see options below";
         }
@@ -949,12 +949,9 @@ public class TicketEmailService {
             } else {
                 content.append(": 12:30 PM\n\n");
             }
-        } else if (forumDesc.equals("Whangarei")) {
-            // Kaitaia venue has been cancelled - only show Whangarei option
-            content.append("WHANGAREI\n");
-            content.append("  Venue: The Barge Showgrounds, 474 Maunu Road, Maunu, Whangarei\n");
-            content.append("  Date: Tuesday 9 September\n");
-            content.append("  Time");
+        } else {
+            // This shouldn't happen for forumVenueMapping
+            content.append("Venue information not available\n");
             if (showMorning && showLunchtime) {
                 content.append("s: 10:30 AM or 12:30 PM\n\n");
             } else if (showMorning) {

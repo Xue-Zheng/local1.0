@@ -980,7 +980,7 @@ public class AdminController {
     private String extractSessionTime(EventMember eventMember) {
         // First check if this is a forumVenueMapping member
         String forumDesc = eventMember.getForumDesc();
-        if (forumDesc != null && (forumDesc.equals("Greymouth") || forumDesc.equals("Whangarei"))) {
+        if (forumDesc != null && forumDesc.equals("Greymouth")) {
             // For these special forums, return special instructions
             return "Multiple venues and times available";
         }

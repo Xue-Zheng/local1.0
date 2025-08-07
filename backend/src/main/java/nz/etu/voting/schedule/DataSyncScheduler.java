@@ -16,8 +16,8 @@ import java.time.LocalDateTime;
 public class DataSyncScheduler {
 
     private final InformerSyncService informerSyncService;
-    //    凌晨 1:00 自动同步有邮箱会员（提前1小时，避开高峰期）
-    @Scheduled(cron = "0 0 1 * * ?")
+    //    凌晨 1:00 自动同步有邮箱会员（提前1小时，避开高峰期）- DISABLED
+    // @Scheduled(cron = "0 0 1 * * ?")
     public void syncEmailMembersData() {
         log.info("=== Starting email members DIRECT sync at 1:00 AM (45000+ records) ===");
         try {
@@ -30,8 +30,8 @@ public class DataSyncScheduler {
         }
     }
 
-    //    凌晨 2:00 自动同步仅短信会员（间隔1小时，确保上一个任务完成）
-    @Scheduled(cron = "0 0 2 * * ?")
+    //    凌晨 2:00 自动同步仅短信会员（间隔1小时，确保上一个任务完成）- DISABLED
+    // @Scheduled(cron = "0 0 2 * * ?")
     public void syncSmsMembersData() {
         log.info("=== Starting SMS members DIRECT sync at 2:00 AM ===");
         try {
@@ -55,8 +55,8 @@ public class DataSyncScheduler {
         log.info("=== Attendee sync DISABLED ===");
     }
 
-    @Scheduled(fixedRateString = "${sync.schedule.interval:7200000}", // Default 2 hours (increased interval to reduce server load)
-            initialDelayString = "${sync.schedule.initial-delay:300000}") // Starts 5 minutes after launch (allow full startup)
+    // @Scheduled(fixedRateString = "${sync.schedule.interval:7200000}", // Default 2 hours (increased interval to reduce server load)
+    //         initialDelayString = "${sync.schedule.initial-delay:300000}") // Starts 5 minutes after launch (allow full startup) - DISABLED
     public void syncInformerData() {
         log.info("=== Starting scheduled data sync task ===");
         log.info("Current time: {}", LocalDateTime.now());
@@ -69,8 +69,8 @@ public class DataSyncScheduler {
         }
     }
 
-    //    Every day 4:00 full sync check (在所有单独同步完成后进行)
-    @Scheduled(cron = "${sync.schedule.daily-cron:0 0 4 * * ?}")
+    //    Every day 4:00 full sync check (在所有单独同步完成后进行) - DISABLED
+    // @Scheduled(cron = "${sync.schedule.daily-cron:0 0 4 * * ?}")
     public void dailyFullSync() {
         log.info("=== Starting daily full sync check at 4:00 AM ===");
 
