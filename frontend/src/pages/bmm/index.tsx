@@ -19,6 +19,7 @@ interface TicketData {
     eventName: string;
     ticketStatus: string;
     specialVoteEligible: boolean;
+    specialVoteRequested?: boolean; // Whether member has applied for special vote
     // Stage 1 preferences
     preferredTimesJson?: string;
     workplaceInfo?: string;
@@ -516,10 +517,10 @@ export default function TicketPage() {
                                     </div>
                                 )}
 
-                                {ticketData.specialVoteEligible && (
-                                    <div className="mb-6 p-3 bg-yellow-50 dark:bg-yellow-900/30 rounded-lg">
-                                        <p className="text-sm font-medium text-yellow-800 dark:text-yellow-200">
-                                            Special Vote Eligible - {ticketData.region}
+                                {ticketData.specialVoteRequested && (
+                                    <div className="mb-6 p-3 bg-green-50 dark:bg-green-900/30 rounded-lg">
+                                        <p className="text-sm font-medium text-green-800 dark:text-green-200">
+                                            ✓ Special Vote Applied - {ticketData.region}
                                         </p>
                                     </div>
                                 )}

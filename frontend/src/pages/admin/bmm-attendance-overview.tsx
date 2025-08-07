@@ -9,6 +9,7 @@ interface AttendanceStats {
     attendingCount: number;
     notAttendingCount: number;
     specialVoteEligible: number;
+    specialVoteRequested: number; // 已申请special vote的数量
     ticketsSent: number;
     checkedIn: number;
     venueDistribution: { [key: string]: number };
@@ -19,6 +20,7 @@ interface AttendanceStats {
             attending: number;
             notAttending: number;
             specialVoteEligible?: number;
+            specialVoteRequested?: number; // 已申请special vote的数量
             ticketsSent: number;
             checkedIn: number;
         };
@@ -291,9 +293,9 @@ export default function BmmAttendanceOverview() {
                                 <div className="bg-white p-6 rounded-lg shadow border-l-4 border-amber-500">
                                     <div className="flex items-center justify-between">
                                         <div>
-                                            <p className="text-sm font-medium text-gray-500">Special Vote</p>
-                                            <p className="text-3xl font-semibold text-gray-900">{stats.specialVoteEligible}</p>
-                                            <p className="text-xs text-gray-500">Central & Southern</p>
+                                            <p className="text-sm font-medium text-gray-500">Special Vote Applied</p>
+                                            <p className="text-3xl font-semibold text-gray-900">{stats.specialVoteRequested || 0}</p>
+                                            <p className="text-xs text-gray-500">of {stats.specialVoteEligible || 0} eligible</p>
                                         </div>
                                         <div className="text-3xl">🗳️</div>
                                     </div>
@@ -350,11 +352,21 @@ export default function BmmAttendanceOverview() {
                                                         {data.notAttending} ({data.total > 0 ? Math.round((data.notAttending / data.total) * 100) : 0}%)
                                                     </span>
                                                 </div>
-                                                {(region === 'Central' || region === 'Southern') && data.specialVoteEligible !== undefined && (
-                                                    <div className="flex justify-between text-sm pt-2 border-t">
-                                                        <span className="text-gray-600">Special Vote Eligible:</span>
-                                                        <span className="font-medium text-amber-600">{data.specialVoteEligible}</span>
-                                                    </div>
+                                                {(region === 'Central' || region === 'Southern') && (
+                                                    <>
+                                                        {data.specialVoteEligible !== undefined && (
+                                                            <div className="flex justify-between text-sm pt-2 border-t">
+                                                                <span className="text-gray-600">Special Vote Eligible:</span>
+                                                                <span className="font-medium text-gray-600">{data.specialVoteEligible}</span>
+                                                            </div>
+                                                        )}
+                                                        {data.specialVoteRequested !== undefined && (
+                                                            <div className="flex justify-between text-sm">
+                                                                <span className="text-gray-600">Special Vote Applied:</span>
+                                                                <span className="font-medium text-amber-600">{data.specialVoteRequested}</span>
+                                                            </div>
+                                                        )}
+                                                    </>
                                                 )}
                                                 <div className="flex justify-between text-sm">
                                                     <span className="text-gray-600">Tickets Sent:</span>

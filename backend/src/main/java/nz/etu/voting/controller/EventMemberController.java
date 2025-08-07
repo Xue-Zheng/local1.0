@@ -974,6 +974,9 @@ public class EventMemberController {
         response.put("hasRegistered", member.getHasRegistered());
         response.put("isAttending", member.getIsAttending());
         response.put("isSpecialVote", member.getIsSpecialVote());
+        response.put("specialVoteEligible", member.getSpecialVoteEligible()); // 是否有资格申请
+        response.put("specialVoteRequested", member.getSpecialVoteRequested()); // 是否已申请
+        response.put("specialVoteStatus", member.getBmmSpecialVoteStatus()); // 申请状态
         response.put("absenceReason", member.getAbsenceReason());
         response.put("token", member.getToken().toString());
 

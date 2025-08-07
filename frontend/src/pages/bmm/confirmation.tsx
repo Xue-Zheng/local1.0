@@ -1953,7 +1953,7 @@ export default function BMMConfirmationPage() {
                                                 <button
                                                     onClick={(e) => handleSubmit(e)}
                                                     disabled={!absenceReason || (absenceReason === 'other' && !otherReason) ||
-                                                        (memberData?.specialVoteEligible && absenceReason && !specialVoteReason) ||
+                                                        (memberData?.specialVoteEligible && absenceReason !== 'other' && !specialVoteReason) ||
                                                         isSubmitting}
                                                     className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 text-white font-bold py-3 px-4 rounded transition-colors mt-6"
                                                 >

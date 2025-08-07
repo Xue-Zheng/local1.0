@@ -726,7 +726,8 @@ public class BmmServiceImpl implements BmmService {
                     "content", personalizedContent,
                     "eventMemberId", eventMember.getId(),
                     "templateCode", template.getTemplateCode(),
-                    "notificationType", "BMM_EMAIL"
+                    "notificationType", "BMM_EMAIL",
+                    "provider", "MAILJET"
             );
 
             rabbitTemplate.convertAndSend(emailQueue, emailData);
