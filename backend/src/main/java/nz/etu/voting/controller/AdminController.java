@@ -718,6 +718,13 @@ public class AdminController {
                     .count();
 
             stats.put("specialVoteEligible", specialVoteEligible);
+            
+            // Count special vote requested (actually applied for special vote)
+            long specialVoteRequested = confirmedMembers.stream()
+                    .filter(member -> Boolean.TRUE.equals(member.getSpecialVoteRequested()))
+                    .count();
+            
+            stats.put("specialVoteRequested", specialVoteRequested);
 
             // Count tickets sent and checked in
             long ticketsSent = confirmedMembers.stream()
@@ -749,8 +756,10 @@ public class AdminController {
                 // Special vote only for Central and Southern
                 if (region.equals("Central") || region.equals("Southern")) {
                     regionData.put("specialVoteEligible", regionMembers.stream()
-                            .filter(member -> Boolean.TRUE.equals(member.getIsAttending()) &&
-                                    Boolean.TRUE.equals(member.getSpecialVoteEligible()))
+                            .filter(member -> Boolean.TRUE.equals(member.getSpecialVoteEligible()))
+                            .count());
+                    regionData.put("specialVoteRequested", regionMembers.stream()
+                            .filter(member -> Boolean.TRUE.equals(member.getSpecialVoteRequested()))
                             .count());
                 }
 
