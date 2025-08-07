@@ -1,0 +1,41 @@
+{
+  "routes": [
+    {
+      "route": "/api/*",
+      "allowedRoles": ["anonymous"]
+    },
+    {
+      "route": "/admin/login",
+      "rewrite": "/admin/login/index.html"
+    },
+    {
+      "route": "/admin/*",
+      "rewrite": "/admin/*/index.html"
+    }
+  ],
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": [
+      "/api/*",
+      "/_next/*",
+      "/images/*",
+      "/admin/*",
+      "*.{css,scss,js,png,gif,ico,jpg,svg,woff,woff2,ttf,eot}"
+    ]
+  },
+  "responseOverrides": {
+    "404": {
+      "rewrite": "/index.html",
+      "statusCode": 200
+    }
+  },
+  "mimeTypes": {
+    ".json": "application/json",
+    ".js": "application/javascript",
+    ".css": "text/css",
+    ".html": "text/html"
+  },
+  "globalHeaders": {
+    "Cache-Control": "no-cache"
+  }
+}
