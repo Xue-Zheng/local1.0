@@ -739,9 +739,9 @@ public class EventMemberController {
 
             EventMember member = memberOpt.get();
 
-            // 验证：只有Central和Southern Region成员才能申请特殊投票（使用VenueService验证）
+            // 验证：只有Southern Region成员才能申请特殊投票（使用VenueService验证）
             if (!venueService.isSpecialVoteEligible(member.getRegionDesc())) {
-                return ResponseEntity.badRequest().body(ApiResponse.error("Special vote applications are only available for Central and Southern Region members"));
+                return ResponseEntity.badRequest().body(ApiResponse.error("Special vote applications are only available for Southern Region members"));
             }
 
             // 验证：只有不出席的会员才能申请特殊投票
@@ -861,7 +861,7 @@ public class EventMemberController {
                 eventMember.setBmmRegistrationStage("ATTENDANCE_DECLINED");
                 eventMember.setBmmAttendanceDeclinedAt(LocalDateTime.now());
 
-                // 对于Central和Southern Region会员，如果拒绝出席，可能需要发送特殊投票邮件（使用VenueService验证）
+                // 对于Southern Region会员，如果拒绝出席，可能需要发送特殊投票邮件（使用VenueService验证）
                 if (venueService.isSpecialVoteEligible(eventMember.getRegionDesc())) {
                     eventMember.setSpecialVoteEligible(true);
                     log.info("{} member declined attendance, marked as special vote eligible: {}", eventMember.getRegionDesc(),

@@ -115,9 +115,10 @@ public class EventRegistrationController {
 
             EventMember member = memberOpt.get();
 
-            // Validation: Only Central and Southern Region members
-            if ("Northern Region".equals(member.getRegionDesc()) || "Northern Region".equals(member.getAssignedRegion())) {
-                return ResponseEntity.badRequest().body(ApiResponse.error("Special vote applications are only available for Central and Southern Region members"));
+            // Validation: Only Southern Region members
+            if ("Northern Region".equals(member.getRegionDesc()) || "Northern Region".equals(member.getAssignedRegion()) || 
+                "Central Region".equals(member.getRegionDesc()) || "Central Region".equals(member.getAssignedRegion())) {
+                return ResponseEntity.badRequest().body(ApiResponse.error("Special vote applications are only available for Southern Region members"));
             }
 
             // Validation: Member must not be attending

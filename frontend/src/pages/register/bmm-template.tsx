@@ -545,8 +545,8 @@ export default function BMMPreferencePage() {
                                                 </div>
                                             </div>
 
-                                            {/* Special Vote Question - Only for Central and Southern Regions */}
-                                            {memberData && (memberData.regionDesc === 'Central' || memberData.regionDesc === 'Southern' || memberData.regionDesc === 'Central Region' || memberData.regionDesc === 'Southern Region') && (
+                                            {/* Special Vote Question - Only for Southern Region */}
+                                            {memberData && (memberData.regionDesc === 'Southern' || memberData.regionDesc === 'Southern Region') && (
                                                 <div className="mb-6 bg-amber-50 dark:bg-amber-900/20 rounded-lg p-6">
                                                     <label className="block text-lg font-semibold text-amber-800 dark:text-amber-200 mb-4">
                                                         <span className="mr-2">📮</span>Do you believe you qualify for a special vote?

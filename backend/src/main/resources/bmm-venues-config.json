@@ -505,7 +505,7 @@
     "totalVenues": 24,
     "totalForumDesc": 24,
     "month": "September 2025",
-    "specialVoteEligible": ["Central Region", "Southern Region"],
+    "specialVoteEligible": ["Southern Region"],
     "notes": {
       "nullForumDesc": "Approximately 12 members have null or empty forum_desc field",
       "cancelledVenues": {

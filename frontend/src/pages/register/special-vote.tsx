@@ -75,7 +75,7 @@ export default function SpecialVotePage() {
 
                     // Check if member is eligible for special vote
                     if (!member.specialVoteEligible) {
-                        toast.error('Special vote applications are only available for Central and Southern Region members');
+                        toast.error('Special vote applications are only available for Southern Region members');
                         router.push(`/bmm?token=${token}`);
                         return;
                     }

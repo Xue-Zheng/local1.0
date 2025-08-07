@@ -42,8 +42,14 @@ export default function ConfirmCentralAttendance() {
     if (loading) {
         return (
             <Layout>
-                <div className="min-h-screen flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500"></div>
+                <div className="min-h-screen flex flex-col items-center justify-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mb-6"></div>
+                    <p className="text-lg text-gray-600 text-center max-w-md">
+                        We're now asking you to confirm your attendance at the following meeting.
+                    </p>
+                    <p className="text-lg text-gray-600 text-center max-w-md mt-2">
+                        Confirming your attendance will take two minutes of your time.
+                    </p>
                 </div>
             </Layout>
         );
@@ -119,60 +125,13 @@ export default function ConfirmCentralAttendance() {
                                 Once you confirm your attendance, you will get access to your personalised ticket for entry to your BMM.
                             </p>
                             <ul className="list-disc list-inside text-gray-700 space-y-2 ml-4">
-                                <li>This ticket will be sent to you by email (and/or available for download)</li>
-                                <li>You must bring this ticket with you to the meeting – either printed or on your phone</li>
+                                <li>Your ticket will be available for download and/or print</li>
+                                <li>Please bring your ticket with you – printed or on your phone</li>
                                 <li>Your ticket will be used to register your attendance on the day</li>
-                                <li>Your ticket will be your voting pass</li>
                             </ul>
                         </div>
                     </div>
 
-                    {/* Central Region Voting Information */}
-                    <div className="bg-green-50 border border-green-200 rounded-lg p-8 mb-8">
-                        <h3 className="text-2xl font-bold text-green-900 mb-4">
-                            Voting rights – Central Region members only
-                        </h3>
-                        <div className="space-y-4 text-green-800">
-                            <p>
-                                If your selected meeting is in the Central Region, your ticket will also serve as your <strong>voting pass</strong> for the election of the National Executive Central Region Representative.
-                            </p>
-                            <p className="font-semibold">
-                                Only members who bring their ticket and are present at the meeting will be eligible to vote.
-                            </p>
-
-                            <div className="bg-white border border-green-300 rounded-lg p-4 mt-4">
-                                <h4 className="font-bold text-green-900 mb-2">Central Region Election Voting Process</h4>
-                                <p className="text-green-700 mb-2">
-                                    If you are a member from the Central Region, attending your Biennial Membership Meeting (BMM) will give you the right to vote for the Central Region representative on the National Executive. After you present your attendance ticket at the meeting, you will receive a secure voting link via email. You will then have 72 hours to cast your vote for your preferred candidate. Please ensure your contact details are up to date to receive the voting link promptly after the meeting.
-                                </p>
-                            </div>
-
-                            {/* Special Vote Application */}
-                            <div className="bg-purple-50 border border-purple-300 rounded-lg p-4 mt-4">
-                                <h4 className="font-bold text-purple-900 mb-2">Special Vote Application (Important Voting Info only for the Central Region members)</h4>
-                                <p className="text-purple-800 mb-2">
-                                    If you are unable to attend the BMM in your area but wish to vote in the Regional Representative election, you may be eligible to apply for a special vote.
-                                </p>
-                                <p className="text-sm text-purple-700 mb-2">To qualify, one of the following must apply to you:</p>
-                                <ul className="text-sm text-purple-700 list-disc list-inside space-y-1 ml-4">
-                                    <li>You have a disability that prevents you from fully participating in the meeting</li>
-                                    <li>You are ill or infirm, making attendance impossible</li>
-                                    <li>You live more than 32km from the meeting venue (as per list above)</li>
-                                    <li>Your employer requires you to work during the time of the meeting</li>
-                                    <li>Attending the meeting would cause you serious hardship or major inconvenience</li>
-                                </ul>
-                                <p className="text-sm font-semibold text-purple-800 mt-2">
-                                    Special vote applications must be made at least 14 days before the start of the BMM at which the secret ballot is to be held.
-                                </p>
-                                <p className="text-sm text-purple-700 mt-2">
-                                    If approved, a ballot paper will be issued to you by the Returning Officer.
-                                </p>
-                                <p className="text-sm text-purple-700 mt-2">
-                                    If you have any questions about the voting process, please contact our Returning Officer at <a href="mailto:returningofficer@etu.nz" className="underline">returningofficer@etu.nz</a>.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
 
                     {/* Confirmation Button */}
                     <div className="text-center">

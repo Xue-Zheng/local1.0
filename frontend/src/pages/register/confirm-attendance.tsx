@@ -176,8 +176,14 @@ export default function ConfirmAttendance() {
     if (loading) {
         return (
             <Layout>
-                <div className="min-h-screen flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+                <div className="min-h-screen flex flex-col items-center justify-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-6"></div>
+                    <p className="text-lg text-gray-600 text-center max-w-md">
+                        We're now asking you to confirm your attendance at the following meeting.
+                    </p>
+                    <p className="text-lg text-gray-600 text-center max-w-md mt-2">
+                        Confirming your attendance will take two minutes of your time.
+                    </p>
                 </div>
             </Layout>
         );

@@ -134,11 +134,11 @@ This is Stage 2 of the registration process. In this stage you will:
 • Review your pre-registration information
 • Update your contact and financial information if needed
 • Confirm whether you will attend the BMM
-• If you cannot attend (Central & Southern regions), apply for special voting rights
+• If you cannot attend (Southern region), apply for special voting rights
 
 If you cannot attend:
 • All members: Please provide a reason for non-attendance
-• Central & Southern Region members: You may apply for special voting rights if eligible
+• Southern Region members: You may apply for special voting rights if eligible
 
 The deadline to confirm is [DATE]. Please act promptly.
 

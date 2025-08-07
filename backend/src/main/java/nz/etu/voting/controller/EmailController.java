@@ -1566,9 +1566,9 @@ public class EmailController {
         content.append("   • Your workplace name and location\n");
         content.append("5. Any special requirements or additional comments\n\n");
 
-        // Central and Southern Region special vote section (exclude Northern)
-        if ("central".equals(region) || "southern".equals(region)) {
-            content.append("*** SPECIAL VOTE APPLICATIONS (CENTRAL AND SOUTHERN REGION MEMBERS) ***\n");
+        // Southern Region special vote section (exclude Northern and Central)
+        if ("southern".equals(region)) {
+            content.append("*** SPECIAL VOTE APPLICATIONS (SOUTHERN REGION MEMBERS) ***\n");
             content.append("If you can't attend a meeting due to illness, disability, or other unexpected circumstances, you may apply for a special vote. This application must be made at least 14 days before the meeting where a secret vote is to be held. The Returning Officer will issue a special vote form to eligible members.\n\n");
         }
 
@@ -1659,12 +1659,12 @@ public class EmailController {
         return template;
     }
 
-    // EMAIL: 阶段三：特殊投票申请邮件模板 (Central和Southern Region)
+    // EMAIL: 阶段三：特殊投票申请邮件模板 (Southern Region)
     private Map<String, String> getSpecialVoteTemplate(String region) {
         Map<String, String> template = new HashMap<>();
 
-        // Special vote for Central and Southern Region (exclude Northern)
-        if ("northern".equals(region)) {
+        // Special vote for Southern Region only
+        if ("northern".equals(region) || "central".equals(region)) {
             return getDefaultTemplate();
         }
 

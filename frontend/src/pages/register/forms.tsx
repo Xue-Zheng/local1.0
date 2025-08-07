@@ -910,8 +910,8 @@ export default function FinancialFormPage() {
                                                 </div>
                                             </div>
 
-                                            {/* Special Vote Question - Only for Central/Southern Region */}
-                                            {attendanceReason && (memberData?.regionDesc?.toLowerCase().includes('central') || memberData?.regionDesc?.toLowerCase().includes('southern')) && (
+                                            {/* Special Vote Question - Only for Southern Region */}
+                                            {attendanceReason && memberData?.regionDesc?.toLowerCase().includes('southern') && (
                                                 <div className="border-t border-yellow-200 dark:border-yellow-700 pt-4">
                                                     {/* 显示特殊投票资格状态 */}
                                                     {specialVoteEligibilityMessage && (

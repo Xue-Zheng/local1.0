@@ -113,7 +113,7 @@ public class VenueService {
 
         Map<String, Object> meta = new HashMap<>();
         meta.put("totalVenues", 0);
-        meta.put("specialVoteEligible", Arrays.asList("Central Region", "Southern Region"));
+        meta.put("specialVoteEligible", Arrays.asList("Southern Region"));
         defaultConfig.put("meta", meta);
 
         try {
