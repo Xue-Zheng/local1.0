@@ -472,16 +472,6 @@ export default function TicketPage() {
                                                         </div>
                                                     </div>
                                                 );
-                                            } else if (ticketData.forumDesc === "Whangarei") {
-                                                return (
-                                                    <div className="space-y-3 text-sm">
-                                                        <div className="pl-4">
-                                                            <p className="font-medium text-blue-800 dark:text-blue-300">WHANGAREI</p>
-                                                            <p className="text-gray-700 dark:text-gray-300">The Barge Showgrounds, 474 Maunu Road, Maunu, Whangarei</p>
-                                                            <p className="text-gray-600 dark:text-gray-400">Tuesday 9 September • {sessionText}</p>
-                                                        </div>
-                                                    </div>
-                                                );
                                             }
                                             return null;
                                         })()}
@@ -491,27 +481,16 @@ export default function TicketPage() {
                                                 if (ticketData.preferredTimesJson) {
                                                     try {
                                                         const times = JSON.parse(ticketData.preferredTimesJson);
-                                                        if (ticketData.forumDesc === "Whangarei") {
-                                                            if (times.includes('morning')) {
-                                                                return "✓ Your session time is 10:30 AM";
-                                                            } else if (times.includes('lunchtime')) {
-                                                                return "✓ Your session time is 12:30 PM";
-                                                            }
-                                                            return "✓ You can choose either session time";
-                                                        } else {
-                                                            if (times.includes('morning')) {
-                                                                return "✓ You can choose any venue above for your 10:30 AM session";
-                                                            } else if (times.includes('lunchtime')) {
-                                                                return "✓ You can choose any venue above for your 12:30 PM session";
-                                                            }
+                                                        if (times.includes('morning')) {
+                                                            return "✓ You can choose any venue above for your 10:30 AM session";
+                                                        } else if (times.includes('lunchtime')) {
+                                                            return "✓ You can choose any venue above for your 12:30 PM session";
                                                         }
                                                     } catch {
                                                         // Fall through to default
                                                     }
                                                 }
-                                                return ticketData.forumDesc === "Whangarei" ?
-                                                    "✓ You can choose either session time" :
-                                                    "✓ You can choose any venue and session time above";
+                                                return "✓ You can choose any venue and session time above";
                                             })()}
                                         </p>
                                     </div>

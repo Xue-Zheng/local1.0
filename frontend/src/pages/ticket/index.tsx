@@ -471,21 +471,6 @@ export default function TicketPage() {
                                                         </div>
                                                     </div>
                                                 );
-                                            } else if (ticketData.forumDesc === "Whangarei") {
-                                                return (
-                                                    <div className="space-y-3 text-sm">
-                                                        <div className="pl-4">
-                                                            <p className="font-medium text-blue-800 dark:text-blue-300">Option 1: KAITAIA</p>
-                                                            <p className="text-gray-700 dark:text-gray-300">Kaitaia Reap - Kauri Room, 33 Puckley Avenue, Kaitaia</p>
-                                                            <p className="text-gray-600 dark:text-gray-400">Tuesday 2 September • {sessionText}</p>
-                                                        </div>
-                                                        <div className="pl-4">
-                                                            <p className="font-medium text-blue-800 dark:text-blue-300">Option 2: WHANGAREI</p>
-                                                            <p className="text-gray-700 dark:text-gray-300">The Barge Showgrounds, 474 Maunu Road, Maunu, Whangarei</p>
-                                                            <p className="text-gray-600 dark:text-gray-400">Tuesday 9 September • {sessionText}</p>
-                                                        </div>
-                                                    </div>
-                                                );
                                             }
                                             return null;
                                         })()}
