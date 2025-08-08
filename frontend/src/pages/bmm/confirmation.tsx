@@ -196,8 +196,8 @@ export default function BMMConfirmationPage() {
                 // Log member data to debug venue fields
                 console.log('Member data from API:', member);
 
-                // Check if member is from Central or Southern region for special vote eligibility
-                const eligibleRegions = ['Central Region', 'Southern Region', 'Central', 'Southern'];
+                // Check if member is from Southern region for special vote eligibility
+                const eligibleRegions = ['Southern Region', 'Southern'];
                 const isSpecialVoteEligible = eligibleRegions.includes(member.regionDesc);
 
                 // Set special vote eligibility based on region
