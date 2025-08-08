@@ -150,14 +150,21 @@ public class MailjetService {
     }
 
     private String convertToHtml(String plainText) {
-        // For BMM tickets, keep it simple - just convert line breaks
-        // The plain text already contains all necessary information
-        return "<html><body style=\"font-family: Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #333;\">"
-                + "<div style=\"max-width: 600px; margin: 0 auto; padding: 20px;\">"
-                + plainText.replace("\n", "<br>")
-                        .replace("YOUR TICKET IS READY", "<strong>YOUR TICKET IS READY</strong>")
-                        .replace("IMPORTANT:", "<strong>IMPORTANT:</strong>")
-                        .replace("E tū Union", "<strong>E tū Union</strong>")
+        // Convert plain text to simple HTML with consistent formatting
+        String htmlContent = plainText
+                .replace("\n", "<br>")
+                .replace("======================================", "<hr style=\"border: 2px solid #333; margin: 20px 0;\">")
+                .replace("--------------------------------------", "<hr style=\"border: 1px solid #ccc; margin: 15px 0;\">")
+                .replace("YOUR TICKET IS READY", "<strong style=\"font-size: 18px; color: #2563eb;\">YOUR TICKET IS READY</strong>")
+                .replace("ACCESS YOUR DIGITAL TICKET:", "<strong>ACCESS YOUR DIGITAL TICKET:</strong>")
+                .replace("IMPORTANT INSTRUCTIONS:", "<strong style=\"color: #dc2626;\">IMPORTANT INSTRUCTIONS:</strong>")
+                .replace("NEED HELP?", "<strong>NEED HELP?</strong>")
+                .replace("E tū Union", "<strong>E tū Union</strong>")
+                .replace("Ngā mihi,", "<em>Ngā mihi,</em>");
+        
+        return "<html><body style=\"font-family: Arial, sans-serif; font-size: 14px; line-height: 1.8; color: #333; background-color: #f9fafb;\">"
+                + "<div style=\"max-width: 600px; margin: 20px auto; padding: 30px; background-color: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);\">"
+                + htmlContent
                 + "</div></body></html>";
     }
 }

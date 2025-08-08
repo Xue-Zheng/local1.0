@@ -696,27 +696,39 @@ public class TicketEmailService {
         return "Hi, this is your BMM ticket!";
     }
 
-    // 构建Stratum格式的纯文本邮件内容 - 简化版本
+    // 构建统一的邮件内容 - 用于Stratum和Mailjet
     private String buildBMMTicketEmailContentForStratum(EventMember eventMember, String ticketUrl) {
         // Build simplified template - just essential info and ticket link
         String template = "Kia ora {{name}},\n\n" +
                 "Your attendance for the 2025 E tū Biennial Membership Meeting has been confirmed.\n\n" +
+                "======================================\n" +
                 "YOUR TICKET IS READY\n" +
+                "======================================\n\n" +
                 "Name: {{name}}\n" +
                 "Member ID: {{membershipNumber}}\n" +
                 "Region: {{region}}\n\n" +
-                "Access your digital ticket here:\n" +
-                "{{ticketUrl}}\n\n" +
-                "This ticket contains all your meeting details including venue, date, and time.\n\n" +
-                "IMPORTANT:\n" +
-                "• Click the link above to view your complete ticket with QR code\n" +
-                "• Save the ticket to your phone or take a screenshot\n" +
-                "• You MUST bring this ticket to the venue for check-in\n\n" +
-                "If you have any questions, please contact:\n" +
+                "--------------------------------------\n" +
+                "ACCESS YOUR DIGITAL TICKET:\n" +
+                "{{ticketUrl}}\n" +
+                "--------------------------------------\n\n" +
+                "This ticket contains all your meeting details including:\n" +
+                "- Venue location and address\n" +
+                "- Date and time of your meeting\n" +
+                "- QR code for check-in\n\n" +
+                "IMPORTANT INSTRUCTIONS:\n" +
+                "1. Click the link above to view your complete ticket\n" +
+                "2. Save the ticket to your phone or take a screenshot\n" +
+                "3. You MUST bring this ticket to the venue for check-in\n\n" +
+                "--------------------------------------\n" +
+                "NEED HELP?\n" +
+                "--------------------------------------\n" +
                 "Email: support@etu.nz\n" +
-                "Phone: 0800 1 UNION (0800 186 466)\n\n" +
-                "E tū Union\n" +
-                "www.etu.nz\n";
+                "Phone: 0800 1 UNION (0800 186 466)\n" +
+                "Website: www.etu.nz\n\n" +
+                "Thank you for confirming your attendance.\n" +
+                "We look forward to seeing you at the meeting.\n\n" +
+                "Ngā mihi,\n" +
+                "E tū Union\n";
 
         // Replace variables with actual values - only essential info
         String content = template
