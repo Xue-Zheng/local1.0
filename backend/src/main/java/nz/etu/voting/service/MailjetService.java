@@ -28,7 +28,7 @@ public class MailjetService {
     @Value("${etu.sender.email:Events@etu.nz}")
     private String senderEmail;
 
-    @Value("${etu.sender.name:E tu Union}")
+    @Value("${etu.sender.name:E tū Union}")
     private String senderName;
 
     public void sendEmail(String to, String toName, String subject, String content) {
