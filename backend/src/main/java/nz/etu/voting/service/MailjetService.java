@@ -150,9 +150,14 @@ public class MailjetService {
     }
 
     private String convertToHtml(String plainText) {
-        // Convert plain text to basic HTML
-        return "<html><body><pre style=\"font-family: Arial, sans-serif; white-space: pre-wrap;\">"
+        // For BMM tickets, keep it simple - just convert line breaks
+        // The plain text already contains all necessary information
+        return "<html><body style=\"font-family: Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #333;\">"
+                + "<div style=\"max-width: 600px; margin: 0 auto; padding: 20px;\">"
                 + plainText.replace("\n", "<br>")
-                + "</pre></body></html>";
+                        .replace("YOUR TICKET IS READY", "<strong>YOUR TICKET IS READY</strong>")
+                        .replace("IMPORTANT:", "<strong>IMPORTANT:</strong>")
+                        .replace("E tū Union", "<strong>E tū Union</strong>")
+                + "</div></body></html>";
     }
 }
