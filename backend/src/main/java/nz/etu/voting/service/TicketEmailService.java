@@ -696,53 +696,33 @@ public class TicketEmailService {
         return "Hi, this is your BMM ticket!";
     }
 
-    // 构建Stratum格式的纯文本邮件内容
+    // 构建Stratum格式的纯文本邮件内容 - 简化版本
     private String buildBMMTicketEmailContentForStratum(EventMember eventMember, String ticketUrl) {
-        // Check if this is a forumVenueMapping member
-        String forumDesc = eventMember.getForumDesc();
-        boolean isForumVenueMapping = forumDesc != null &&
-                forumDesc.equals("Greymouth");
-
-        if (isForumVenueMapping) {
-            // Build special template for forumVenueMapping members
-            return buildForumVenueMappingEmailContent(eventMember, ticketUrl);
-        }
-
-        // Build the standard template
+        // Build simplified template - just essential info and ticket link
         String template = "Kia ora {{name}},\n\n" +
-                "Your attendance for the 2025 E t&#363; Biennial Membership Meeting has been confirmed.\n\n" +
-                "TICKET DETAILS\n" +
+                "Your attendance for the 2025 E tū Biennial Membership Meeting has been confirmed.\n\n" +
+                "YOUR TICKET IS READY\n" +
                 "Name: {{name}}\n" +
                 "Member ID: {{membershipNumber}}\n" +
                 "Region: {{region}}\n\n" +
-                "MEETING INFORMATION\n" +
-                "Venue: {{assignedVenue}}\n" +
-                "Date: {{assignedDate}}\n" +
-                "Session: {{sessionTime}}\n\n" +
-                "IMPORTANT: You must bring this ticket to the venue for check-in.\n\n" +
-                "Access your digital ticket with QR code here:\n" +
+                "Access your digital ticket here:\n" +
                 "{{ticketUrl}}\n\n" +
-                "&#128241; SAVE TO YOUR PHONE:\n" +
-                "1. Click the link above to view your ticket\n" +
-                "2. Click 'Save Image' to save the ticket to your phone\n" +
-                "3. Click 'Add to Calendar' to save the event details\n" +
-                "4. Present the QR code at check-in\n\n" +
-                "E t&#363; Union\n" +
+                "This ticket contains all your meeting details including venue, date, and time.\n\n" +
+                "IMPORTANT:\n" +
+                "• Click the link above to view your complete ticket with QR code\n" +
+                "• Save the ticket to your phone or take a screenshot\n" +
+                "• You MUST bring this ticket to the venue for check-in\n\n" +
+                "If you have any questions, please contact:\n" +
                 "Email: support@etu.nz\n" +
-                "Phone: 0800 1 UNION\n" +
-                "Web: www.etu.nz\n";
+                "Phone: 0800 1 UNION (0800 186 466)\n\n" +
+                "E tū Union\n" +
+                "www.etu.nz\n";
 
-        // Replace variables with actual values
+        // Replace variables with actual values - only essential info
         String content = template
                 .replace("{{name}}", eventMember.getName() != null ? eventMember.getName() : "Member")
                 .replace("{{membershipNumber}}", eventMember.getMembershipNumber() != null ? eventMember.getMembershipNumber() : "")
-                .replace("{{region}}", eventMember.getAssignedRegion() != null ?
-                        eventMember.getAssignedRegion() :
-                        (eventMember.getRegionDesc() != null ? eventMember.getRegionDesc() : ""))
-                .replace("{{assignedVenue}}", eventMember.getAssignedVenueFinal() != null ?
-                        eventMember.getAssignedVenueFinal() : "To be confirmed")
-                .replace("{{assignedDate}}", formatDate(eventMember.getAssignedDatetimeFinal()))
-                .replace("{{sessionTime}}", extractSessionTime(eventMember))
+                .replace("{{region}}", eventMember.getRegionDesc() != null ? eventMember.getRegionDesc() : "")
                 .replace("{{ticketUrl}}", ticketUrl);
 
         return content;
@@ -878,128 +858,5 @@ public class TicketEmailService {
 
         // If no matching preference, show both options
         return "10:30 AM or 12:30 PM (Please choose when you arrive)";
-    }
-
-    // Build special email content for forumVenueMapping members (Greymouth and Whangarei)
-    private String buildForumVenueMappingEmailContent(EventMember eventMember, String ticketUrl) {
-        String forumDesc = eventMember.getForumDesc();
-
-        // Determine which session time(s) to show based on preferences
-        String preferredTimesJson = eventMember.getPreferredTimesJson();
-        boolean showMorning = false;
-        boolean showLunchtime = false;
-
-        if (preferredTimesJson != null && !preferredTimesJson.isEmpty()) {
-            if (preferredTimesJson.contains("morning")) {
-                showMorning = true;
-            } else if (preferredTimesJson.contains("lunchtime")) {
-                showLunchtime = true;
-            } else {
-                // Other preferences or no match - show both
-                showMorning = true;
-                showLunchtime = true;
-            }
-        } else {
-            // No preferences - show both
-            showMorning = true;
-            showLunchtime = true;
-        }
-
-        StringBuilder content = new StringBuilder();
-        content.append("Kia ora ").append(eventMember.getName() != null ? eventMember.getName() : "Member").append(",\n\n");
-        content.append("Your attendance for the 2025 E t&#363; Biennial Membership Meeting has been confirmed.\n\n");
-        content.append("TICKET DETAILS\n");
-        content.append("Name: ").append(eventMember.getName() != null ? eventMember.getName() : "").append("\n");
-        content.append("Member ID: ").append(eventMember.getMembershipNumber() != null ? eventMember.getMembershipNumber() : "").append("\n");
-        content.append("Region: ").append(eventMember.getAssignedRegion() != null ?
-                eventMember.getAssignedRegion() :
-                (eventMember.getRegionDesc() != null ? eventMember.getRegionDesc() : "")).append("\n\n");
-
-        content.append("MEETING VENUE OPTIONS FOR ").append(forumDesc.toUpperCase()).append(" FORUM\n");
-
-        // Add session time info based on preference
-        if (showMorning && !showLunchtime) {
-            content.append("Based on your morning preference, here are your venue options for the 10:30 AM session:\n\n");
-        } else if (!showMorning && showLunchtime) {
-            content.append("Based on your lunchtime preference, here are your venue options for the 12:30 PM session:\n\n");
-        } else {
-            content.append("As a member of the ").append(forumDesc).append(" forum, you can choose from the following venues and session times:\n\n");
-        }
-
-        if (forumDesc.equals("Greymouth")) {
-            content.append("Option 1: HOKITIKA\n");
-            content.append("  Venue: St John Hokitika, 134 Stafford Street, Hokitika 7882\n");
-            content.append("  Date: Wednesday 10 September\n");
-            content.append("  Time");
-            if (showMorning && showLunchtime) {
-                content.append("s: 10:30 AM or 12:30 PM\n\n");
-            } else if (showMorning) {
-                content.append(": 10:30 AM\n\n");
-            } else {
-                content.append(": 12:30 PM\n\n");
-            }
-
-            content.append("Option 2: REEFTON\n");
-            content.append("  Venue: Reefton Cinema, Shiel Street, Reefton 7830\n");
-            content.append("  Date: Thursday 11 September\n");
-            content.append("  Time");
-            if (showMorning && showLunchtime) {
-                content.append("s: 10:30 AM or 12:30 PM\n\n");
-            } else if (showMorning) {
-                content.append(": 10:30 AM\n\n");
-            } else {
-                content.append(": 12:30 PM\n\n");
-            }
-
-            content.append("Option 3: GREYMOUTH\n");
-            content.append("  Venue: Regent Greymouth, 2/6 MacKay Street, Greymouth 7805\n");
-            content.append("  Date: Friday 12 September\n");
-            content.append("  Time");
-            if (showMorning && showLunchtime) {
-                content.append("s: 10:30 AM or 12:30 PM\n\n");
-            } else if (showMorning) {
-                content.append(": 10:30 AM\n\n");
-            } else {
-                content.append(": 12:30 PM\n\n");
-            }
-        } else {
-            // This shouldn't happen for forumVenueMapping
-            content.append("Venue information not available\n");
-            if (showMorning && showLunchtime) {
-                content.append("s: 10:30 AM or 12:30 PM\n\n");
-            } else if (showMorning) {
-                content.append(": 10:30 AM\n\n");
-            } else {
-                content.append(": 12:30 PM\n\n");
-            }
-        }
-
-        content.append("IMPORTANT INSTRUCTIONS:\n");
-        content.append("- You can attend ANY of the above venues\n");
-        if (showMorning && showLunchtime) {
-            content.append("- Choose either 10:30 AM or 12:30 PM session at your selected venue\n");
-        } else if (showMorning) {
-            content.append("- Your session time is 10:30 AM based on your preference\n");
-        } else {
-            content.append("- Your session time is 12:30 PM based on your preference\n");
-        }
-        content.append("- You must bring this ticket to the venue for check-in\n");
-        content.append("- Please arrive 15 minutes before your session time\n\n");
-
-        content.append("Access your digital ticket with QR code here:\n");
-        content.append(ticketUrl).append("\n\n");
-
-        content.append("&#128241; SAVE TO YOUR PHONE:\n");
-        content.append("1. Click the link above to view your ticket\n");
-        content.append("2. Click 'Save Image' to save the ticket to your phone\n");
-        content.append("3. Click 'Add to Calendar' to save the event details\n");
-        content.append("4. Present the QR code at check-in\n\n");
-
-        content.append("E t&#363; Union\n");
-        content.append("Email: support@etu.nz\n");
-        content.append("Phone: 0800 1 UNION\n");
-        content.append("Web: www.etu.nz\n");
-
-        return content.toString();
     }
 }
