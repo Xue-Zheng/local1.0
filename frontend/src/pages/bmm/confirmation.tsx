@@ -1252,7 +1252,9 @@ export default function BMMConfirmationPage() {
                                                             <li>This ticket will be sent to you by email (and/or available for download).</li>
                                                             <li><strong>You must bring this ticket with you to the meeting</strong> – either printed or on your phone.</li>
                                                             <li>Your ticket will be used to <strong>register your attendance on the day</strong></li>
-                                                            <li><strong>Your ticket will be your voting pass.</strong></li>
+                                                            {memberData.regionDesc === 'Southern Region' || memberData.regionDesc === 'Southern' ? (
+                                                                <li><strong>Your ticket will be your voting pass.</strong></li>
+                                                            ) : null}
                                                         </ul>
                                                     </div>
 
@@ -1304,7 +1306,7 @@ export default function BMMConfirmationPage() {
                                                 </div>
                                             )}
 
-                                            {/* Central Region Info */}
+                                            {/* Central Region Info - Same as Northern, no voting */}
                                             {(memberData.regionDesc === 'Central Region' || memberData.regionDesc === 'Central') && (
                                                 <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 space-y-6">
                                                     <p className="text-gray-700 dark:text-gray-300">
@@ -1325,53 +1327,7 @@ export default function BMMConfirmationPage() {
                                                             <li>This ticket will be sent to you by email (and/or available for download).</li>
                                                             <li><strong>You must bring this ticket with you to the meeting</strong> – either printed or on your phone.</li>
                                                             <li>Your ticket will be used to <strong>register your attendance on the day</strong></li>
-                                                            <li><strong>Your ticket will be your voting pass.</strong></li>
                                                         </ul>
-                                                    </div>
-
-                                                    <div>
-                                                        <h4 className="font-bold text-lg mb-3 flex items-center">
-                                                            <span className="mr-2">🗳</span> Voting rights – Central Region members only
-                                                        </h4>
-                                                        <p className="text-gray-700 dark:text-gray-300 mb-3">
-                                                            If your selected meeting is in the <strong>Central Region</strong>, your ticket will also serve as your <strong>voting pass</strong> for the election of the <strong>National Executive Central Region Representative</strong>.
-                                                        </p>
-                                                        <p className="text-gray-700 dark:text-gray-300 mb-4">
-                                                            Only members who <strong>bring their ticket and are present at the meeting</strong> will be eligible to vote.
-                                                        </p>
-
-                                                        <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg mb-4">
-                                                            <h5 className="font-bold mb-2">Central Region Election Voting Process</h5>
-                                                            <p className="text-sm text-gray-700 dark:text-gray-300">
-                                                                If you are a member from the Central Region, attending your Biennial Membership Meeting (BMM) will give you the right to vote for the Central Region representative on the National Executive. After you present your attendance ticket at the meeting, you will receive a secure voting link via email. You will then have 72 hours to cast your vote for your preferred candidate. Please ensure your contact details are up to date to receive the voting link promptly after the meeting.
-                                                            </p>
-                                                        </div>
-
-                                                        <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg">
-                                                            <h5 className="font-bold mb-2">Special Vote Application (Important Voting Info only for the Central Region members)</h5>
-                                                            <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">
-                                                                If you are <strong>unable to attend</strong> the BMM in your area but <strong>wish to vote in the Regional Representative election</strong>, you may be eligible to apply for a <strong>special vote</strong>.
-                                                            </p>
-                                                            <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
-                                                                <strong>To qualify</strong>, one of the following must apply to you:
-                                                            </p>
-                                                            <ul className="list-disc list-inside space-y-1 text-sm text-gray-600 dark:text-gray-400 ml-4 mb-3">
-                                                                <li>You have a <strong>disability</strong> that prevents you from fully participating in the meeting</li>
-                                                                <li>You are <strong>ill or infirm</strong>, making attendance impossible</li>
-                                                                <li>You <strong>live more than 32km</strong> from the meeting venue (as per list above)</li>
-                                                                <li>Your <strong>employer requires you to work</strong> during the time of the meeting</li>
-                                                                <li>Attending the meeting would cause you <strong>serious hardship or major inconvenience</strong></li>
-                                                            </ul>
-                                                            <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
-                                                                <strong>Special vote applications must be made at least 14 days before</strong> the start of the BMM at which the secret ballot is to be held.
-                                                            </p>
-                                                            <p className="text-sm text-gray-700 dark:text-gray-300 mb-2">
-                                                                If approved, a ballot paper will be issued to you by the Returning Officer.
-                                                            </p>
-                                                            <p className="text-sm text-gray-700 dark:text-gray-300">
-                                                                <strong>If you have any questions about the voting process, please contact our Returning Officer at</strong> <a href="mailto:returningofficer@etu.nz" className="text-blue-600 hover:underline">returningofficer@etu.nz</a><strong>.</strong>
-                                                            </p>
-                                                        </div>
                                                     </div>
                                                 </div>
                                             )}
