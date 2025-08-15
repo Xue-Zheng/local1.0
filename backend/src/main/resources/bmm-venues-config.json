@@ -1,0 +1,558 @@
+
+{
+  "venues": [
+    {
+      "id": 1,
+      "forumDesc": "Auckland North Shore",
+      "venue": "Barfoot & Thompson Netball Centre – Gibson Room",
+      "address": "44 Northcote Road, Northcote",
+      "date": "Monday 1 September",
+      "capacity": 300,
+      "sessions": [
+        {
+          "id": "morning",
+          "time": "10:30 AM",
+          "timeSpan": "10:00 AM - 12:00 PM"
+        },
+        {
+          "id": "lunchtime",
+          "time": "12:30 PM",
+          "timeSpan": "12:00 PM - 2:00 PM"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "forumDesc": "Auckland West",
+      "venue": "Trusts Arena – Genesis Lounge",
+      "address": "65 Central Park Drive, Henderson",
+      "date": "Wednesday 3 September",
+      "capacity": 600,
+      "sessions": [
+        {
+          "id": "morning",
+          "time": "10:30 AM",
+          "timeSpan": "10:00 AM - 12:00 PM"
+        },
+        {
+          "id": "lunchtime",
+          "time": "12:30 PM",
+          "timeSpan": "12:00 PM - 2:00 PM"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "forumDesc": "Manukau 1",
+      "venue": "Go Media Stadium – Mount Smart – East Lounge",
+      "address": "Mount Smart Stadium, Penrose",
+      "date": "Thursday 4 September",
+      "capacity": 700,
+      "sessions": [
+        {
+          "id": "morning",
+          "time": "10:30 AM",
+          "timeSpan": "10:00 AM - 12:00 PM"
+        },
+        {
+          "id": "lunchtime",
+          "time": "12:30 PM",
+          "timeSpan": "12:00 PM - 2:00 PM"
+        },
+        {
+          "id": "afternoon",
+          "time": "2:30 PM",
+          "timeSpan": "2:00 PM - 4:00 PM"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "forumDesc": "Manukau 2",
+      "venue": "Go Media Stadium – Mount Smart – East Lounge",
+      "address": "Mount Smart Stadium, Penrose",
+      "date": "Thursday 4 September",
+      "capacity": 700,
+      "sessions": [
+        {
+          "id": "morning",
+          "time": "10:30 AM",
+          "timeSpan": "10:00 AM - 12:00 PM"
+        },
+        {
+          "id": "lunchtime",
+          "time": "12:30 PM",
+          "timeSpan": "12:00 PM - 2:00 PM"
+        },
+        {
+          "id": "afternoon",
+          "time": "2:30 PM",
+          "timeSpan": "2:00 PM - 4:00 PM"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "forumDesc": "Auckland Central",
+      "venue": "Alexandra Park – Tasman Room",
+      "address": "233 Green Lane West, Epsom, Auckland",
+      "date": "Friday 5 September",
+      "capacity": 800,
+      "sessions": [
+        {
+          "id": "morning",
+          "time": "10:30 AM",
+          "timeSpan": "10:00 AM - 12:00 PM"
+        },
+        {
+          "id": "lunchtime",
+          "time": "12:30 PM",
+          "timeSpan": "12:00 PM - 2:00 PM"
+        },
+        {
+          "id": "afternoon",
+          "time": "2:30 PM",
+          "timeSpan": "2:00 PM - 4:00 PM"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "forumDesc": "Manukau 3",
+      "venue": "Bruce Pulman Arena",
+      "address": "Pulman Park, 90 Walters Road, Takanini",
+      "date": "Monday 8 September",
+      "capacity": 350,
+      "sessions": [
+        {
+          "id": "morning",
+          "time": "10:30 AM",
+          "timeSpan": "10:00 AM - 12:00 PM"
+        },
+        {
+          "id": "lunchtime",
+          "time": "12:30 PM",
+          "timeSpan": "12:00 PM - 2:00 PM"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "forumDesc": "Pukekohe",
+      "venue": "Bruce Pulman Arena",
+      "address": "Pulman Park, 90 Walters Road, Takanini",
+      "date": "Monday 8 September",
+      "capacity": 350,
+      "sessions": [
+        {
+          "id": "morning",
+          "time": "10:30 AM",
+          "timeSpan": "10:00 AM - 12:00 PM"
+        },
+        {
+          "id": "lunchtime",
+          "time": "12:30 PM",
+          "timeSpan": "12:00 PM - 2:00 PM"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "forumDesc": "Whangarei",
+      "venue": "The Barge Showgrounds",
+      "address": "474 Maunu Road, Maunu, Whangarei",
+      "date": "Tuesday 9 September",
+      "capacity": 100,
+      "sessions": [
+        {
+          "id": "morning",
+          "time": "10:30 AM",
+          "timeSpan": "10:00 AM - 12:00 PM"
+        },
+        {
+          "id": "lunchtime",
+          "time": "12:30 PM",
+          "timeSpan": "12:00 PM - 2:00 PM"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "forumDesc": "Christchurch 2",
+      "venue": "Addington Raceway",
+      "address": "75 Jack Hinton Drive, Addington, Christchurch",
+      "date": "Tuesday 9 September",
+      "capacity": 500,
+      "sessions": [
+        {
+          "id": "morning",
+          "time": "10:30 AM",
+          "timeSpan": "10:00 AM - 12:00 PM"
+        },
+        {
+          "id": "lunchtime",
+          "time": "12:30 PM",
+          "timeSpan": "12:00 PM - 2:00 PM"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "forumDesc": "Rotorua",
+      "venue": "Arawa Park Hotel",
+      "address": "272 Fenton Street, Rotorua",
+      "date": "Wednesday 10 September",
+      "capacity": 300,
+      "sessions": [
+        {
+          "id": "morning",
+          "time": "10:30 AM",
+          "timeSpan": "10:00 AM - 12:00 PM"
+        },
+        {
+          "id": "lunchtime",
+          "time": "12:30 PM",
+          "timeSpan": "12:00 PM - 2:00 PM"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "forumDesc": "Hamilton 1",
+      "venue": "Distinction Hamilton Hotel",
+      "address": "100 Garnett Avenue, Te Rapa, Hamilton",
+      "date": "Thursday 11 September",
+      "capacity": 300,
+      "sessions": [
+        {
+          "id": "morning",
+          "time": "10:30 AM",
+          "timeSpan": "10:00 AM - 12:00 PM"
+        },
+        {
+          "id": "lunchtime",
+          "time": "12:30 PM",
+          "timeSpan": "12:00 PM - 2:00 PM"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "forumDesc": "Hamilton 2",
+      "venue": "Distinction Hamilton Hotel",
+      "address": "100 Garnett Avenue, Te Rapa, Hamilton",
+      "date": "Thursday 11 September",
+      "capacity": 300,
+      "sessions": [
+        {
+          "id": "morning",
+          "time": "10:30 AM",
+          "timeSpan": "10:00 AM - 12:00 PM"
+        },
+        {
+          "id": "lunchtime",
+          "time": "12:30 PM",
+          "timeSpan": "12:00 PM - 2:00 PM"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "forumDesc": "Tauranga",
+      "venue": "Papamoa Community Centre – Aihe Room",
+      "address": "15 Gravatt Road, Papamoa",
+      "date": "Friday 12 September",
+      "capacity": 70,
+      "sessions": [
+        {
+          "id": "morning",
+          "time": "10:30 AM",
+          "timeSpan": "10:00 AM - 12:00 PM"
+        },
+        {
+          "id": "lunchtime",
+          "time": "12:30 PM",
+          "timeSpan": "12:00 PM - 2:00 PM"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "forumDesc": "Dunedin",
+      "venue": "Harbourview Lounge – Edgar Centre",
+      "address": "116 Portsmouth Drive, South Dunedin 9012",
+      "date": "Monday 15 September",
+      "capacity": 200,
+      "sessions": [
+        {
+          "id": "morning",
+          "time": "10:30 AM",
+          "timeSpan": "10:00 AM - 12:00 PM"
+        },
+        {
+          "id": "lunchtime",
+          "time": "12:30 PM",
+          "timeSpan": "12:00 PM - 2:00 PM"
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "forumDesc": "Invercargill",
+      "venue": "Invercargill Workingmen's Club – North Lounge",
+      "address": "154 Esk Street, Invercargill 9810",
+      "date": "Tuesday 16 September",
+      "capacity": 550,
+      "sessions": [
+        {
+          "id": "morning",
+          "time": "10:30 AM",
+          "timeSpan": "10:00 AM - 12:00 PM"
+        },
+        {
+          "id": "lunchtime",
+          "time": "12:30 PM",
+          "timeSpan": "12:00 PM - 2:00 PM"
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "forumDesc": "New Plymouth",
+      "venue": "Theatre Royal (TSB Showplace)",
+      "address": "92-100 Devon Street West, New Plymouth",
+      "date": "Tuesday 30 September",
+      "capacity": 527,
+      "sessions": [
+        {
+          "id": "morning",
+          "time": "10:30 AM",
+          "timeSpan": "10:00 AM - 12:00 PM"
+        },
+        {
+          "id": "lunchtime",
+          "time": "12:30 PM",
+          "timeSpan": "12:00 PM - 2:00 PM"
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "forumDesc": "Timaru",
+      "venue": "Caroline Bay Hall",
+      "address": "Timaru Port, Timaru 7910",
+      "date": "Wednesday 17 September",
+      "capacity": 800,
+      "sessions": [
+        {
+          "id": "morning",
+          "time": "10:30 AM",
+          "timeSpan": "10:00 AM - 12:00 PM"
+        },
+        {
+          "id": "lunchtime",
+          "time": "12:30 PM",
+          "timeSpan": "12:00 PM - 2:00 PM"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "forumDesc": "Christchurch 1",
+      "venue": "Woolston Club",
+      "address": "43 Hargood Street, Christchurch 8062",
+      "date": "Friday 19 September",
+      "capacity": 470,
+      "sessions": [
+        {
+          "id": "morning",
+          "time": "10:30 AM",
+          "timeSpan": "10:00 AM - 12:00 PM"
+        },
+        {
+          "id": "lunchtime",
+          "time": "12:30 PM",
+          "timeSpan": "12:00 PM - 2:00 PM"
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "forumDesc": "Nelson",
+      "venue": "Club Waimea",
+      "address": "345 Lower Queen Street, Richmond 7020",
+      "date": "Monday 22 September",
+      "capacity": 250,
+      "sessions": [
+        {
+          "id": "lunchtime",
+          "time": "12:30 PM",
+          "timeSpan": "12:00 PM - 2:00 PM"
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "forumDesc": "Wellington 1",
+      "venue": "Te Rauparaha Arena – Small Stadium",
+      "address": "17 Parumoana Street, Porirua 5022",
+      "date": "Monday 22 September",
+      "capacity": null,
+      "sessions": [
+        {
+          "id": "morning",
+          "time": "10:30 AM",
+          "timeSpan": "10:00 AM - 12:00 PM"
+        },
+        {
+          "id": "lunchtime",
+          "time": "12:30 PM",
+          "timeSpan": "12:00 PM - 2:00 PM"
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "forumDesc": "Palmerston North",
+      "venue": "Palmy Conference & Function Centre",
+      "address": "354 Main Street, Palmerston North Central, Palmerston North 4410",
+      "date": "Tuesday 23 September",
+      "capacity": 600,
+      "sessions": [
+        {
+          "id": "morning",
+          "time": "10:30 AM",
+          "timeSpan": "10:00 AM - 12:00 PM"
+        },
+        {
+          "id": "lunchtime",
+          "time": "12:30 PM",
+          "timeSpan": "12:00 PM - 2:00 PM"
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "forumDesc": "Napier",
+      "venue": "Hawkes Bay Cricket Association",
+      "address": "35 Jull Street, Nelson Park, Napier",
+      "date": "Thursday 25 September",
+      "capacity": null,
+      "sessions": [
+        {
+          "id": "morning",
+          "time": "10:30 AM",
+          "timeSpan": "10:00 AM - 12:00 PM"
+        },
+        {
+          "id": "afternoon",
+          "time": "2:30 PM",
+          "timeSpan": "2:00 PM - 4:00 PM"
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "forumDesc": "Gisborne",
+      "venue": "Gisborne Cosmopolitan Club",
+      "address": "190 Derby Street, Gisborne 4010",
+      "date": "Friday 26 September",
+      "capacity": null,
+      "sessions": [
+        {
+          "id": "lunchtime",
+          "time": "12:30 PM",
+          "timeSpan": "12:00 PM - 2:00 PM"
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "forumDesc": "Wellington 2",
+      "venue": "Silverstream Retreat – Boardwalk Complex",
+      "address": "3 Reynolds Bach Drive, Lower Hutt 5019",
+      "date": "Monday 29 September",
+      "capacity": null,
+      "sessions": [
+        {
+          "id": "morning",
+          "time": "10:30 AM",
+          "timeSpan": "10:00 AM - 12:00 PM"
+        },
+        {
+          "id": "lunchtime",
+          "time": "12:30 PM",
+          "timeSpan": "12:00 PM - 2:00 PM"
+        }
+      ]
+    }
+  ],
+  "regionMapping": {
+    "Northern Region": {
+      "color": "blue",
+      "description": "Covers upper North Island areas"
+    },
+    "Central Region": {
+      "color": "green",
+      "description": "Covers lower North Island areas"
+    },
+    "Southern Region": {
+      "color": "pink",
+      "description": "Covers South Island areas"
+    }
+  },
+  "meta": {
+    "totalVenues": 24,
+    "totalForumDesc": 24,
+    "month": "September 2025",
+    "specialVoteEligible": ["Southern Region"],
+    "notes": {
+      "nullForumDesc": "Approximately 12 members have null or empty forum_desc field",
+      "cancelledVenues": {
+        "Greymouth": "Cancelled due to insufficient member interest",
+        "Hokitika": "Cancelled due to insufficient member interest",
+        "Reefton": "Cancelled due to insufficient member interest"
+      },
+      "specialForums": {
+        "_Kaitaia_CANCELLED": "CANCELLED - was part of Whangarei forum"
+      },
+      "sharedVenues": [
+        {
+          "venue": "Bruce Pulman Arena",
+          "forumDescs": ["Manukau 3", "Pukekohe"]
+        },
+        {
+          "venue": "Go Media Stadium",
+          "forumDescs": ["Manukau 1", "Manukau 2"]
+        },
+        {
+          "venue": "Distinction Hamilton Hotel",
+          "forumDescs": ["Hamilton 1", "Hamilton 2"]
+        }
+      ]
+    }
+  },
+  "forumVenueMapping": {
+    "Whangarei": [
+      {
+        "venueName": "Whangarei",
+        "fullName": "The Barge Showgrounds",
+        "address": "474 Maunu Road, Maunu, Whangarei",
+        "date": "Tuesday 9 September",
+        "capacity": 100,
+        "sessions": [
+          {
+            "id": "morning",
+            "time": "10:30 AM",
+            "timeSpan": "10:00 AM - 12:00 PM"
+          },
+          {
+            "id": "lunchtime",
+            "time": "12:30 PM",
+            "timeSpan": "12:00 PM - 2:00 PM"
+          }
+        ]
+      }
+    ]
+  }
+}
