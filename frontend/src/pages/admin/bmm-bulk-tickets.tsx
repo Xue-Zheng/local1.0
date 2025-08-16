@@ -42,6 +42,7 @@ export default function BMMBulkTickets() {
     const [membersWithMobile, setMembersWithMobile] = useState<EventMember[]>([]);
     const [searchWorksite, setSearchWorksite] = useState('');
     const [filterByStatus, setFilterByStatus] = useState('all');
+    const [selectedMemberIds, setSelectedMemberIds] = useState<Set<number>>(new Set());
 
     useEffect(() => {
         loadBMMEvent();
@@ -150,12 +151,14 @@ export default function BMMBulkTickets() {
     };
 
     const sendBulkTickets = async () => {
-        if (!selectedMembers.length) {
+        const membersToSend = selectedMembers.filter(member => selectedMemberIds.has(member.id));
+        
+        if (!membersToSend.length) {
             toast.error('No members selected to send tickets');
             return;
         }
 
-        const confirmMessage = `Send tickets to ${selectedMembers.length} members from ${selectedWorksite}?`;
+        const confirmMessage = `Send tickets to ${membersToSend.length} selected members from ${selectedWorksite}?`;
         if (!confirm(confirmMessage)) {
             return;
         }
@@ -164,7 +167,7 @@ export default function BMMBulkTickets() {
             setSendingTickets(true);
 
             // Since all members in same worksite are from same forum, get forum from first member
-            const forumDesc = selectedMembers[0]?.forumDesc || '';
+            const forumDesc = membersToSend[0]?.forumDesc || '';
 
             // Prepare email content with ticket template (simple format for Stratum)
             const subject = 'Your BMM 2025 Event Ticket - Action Required';
@@ -216,7 +219,7 @@ P.S. If you cannot attend, please let us know as soon as possible.`;
             const memberIds = selectedMembers.map(m => m.id);
 
             // First, generate tickets for all members
-            for (const member of selectedMembers) {
+            for (const member of membersToSend) {
                 try {
                     await api.post(`/admin/ticket-emails/member/${member.id}/generate-and-send`);
                 } catch (error) {
@@ -226,12 +229,12 @@ P.S. If you cannot attend, please let us know as soon as possible.`;
 
             // Separate members with email and without email (SMS only)
             // SMS only: no email OR empty email OR temp email (@temp-email.etu.nz)
-            const membersWithEmail = selectedMembers.filter(m =>
+            const membersWithEmail = membersToSend.filter(m =>
                 m.primaryEmail &&
                 m.primaryEmail.trim() !== '' &&
                 !m.primaryEmail.includes('@temp-email.etu.nz')
             );
-            const membersNoEmail = selectedMembers.filter(m =>
+            const membersNoEmail = membersToSend.filter(m =>
                 !m.primaryEmail ||
                 m.primaryEmail.trim() === '' ||
                 m.primaryEmail.includes('@temp-email.etu.nz')
@@ -465,10 +468,10 @@ P.S. If you cannot attend, please let us know as soon as possible.`;
                                 </select>
                                 <button
                                     onClick={sendBulkTickets}
-                                    disabled={sendingTickets}
+                                    disabled={sendingTickets || selectedMemberIds.size === 0}
                                     className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg disabled:opacity-50"
                                 >
-                                    {sendingTickets ? 'Sending...' : `Send ${selectedMembers.length} Tickets`}
+                                    {sendingTickets ? 'Sending...' : `Send ${selectedMemberIds.size} Selected Tickets`}
                                 </button>
                             </div>
                         </div>
@@ -477,6 +480,20 @@ P.S. If you cannot attend, please let us know as soon as possible.`;
                             <table className="min-w-full table-auto">
                                 <thead>
                                 <tr className="bg-gray-50">
+                                    <th className="px-4 py-2 text-center">
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedMembers.length > 0 && selectedMemberIds.size === selectedMembers.length}
+                                            onChange={(e) => {
+                                                if (e.target.checked) {
+                                                    setSelectedMemberIds(new Set(selectedMembers.map(m => m.id)));
+                                                } else {
+                                                    setSelectedMemberIds(new Set());
+                                                }
+                                            }}
+                                            className="w-4 h-4"
+                                        />
+                                    </th>
                                     <th className="px-4 py-2 text-left">Member ID</th>
                                     <th className="px-4 py-2 text-left">Name</th>
                                     <th className="px-4 py-2 text-left">Email</th>
@@ -489,6 +506,22 @@ P.S. If you cannot attend, please let us know as soon as possible.`;
                                 <tbody>
                                 {selectedMembers.map((member) => (
                                     <tr key={member.id} className="border-t hover:bg-gray-50">
+                                        <td className="px-4 py-2 text-center">
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedMemberIds.has(member.id)}
+                                                onChange={(e) => {
+                                                    const newSelected = new Set(selectedMemberIds);
+                                                    if (e.target.checked) {
+                                                        newSelected.add(member.id);
+                                                    } else {
+                                                        newSelected.delete(member.id);
+                                                    }
+                                                    setSelectedMemberIds(newSelected);
+                                                }}
+                                                className="w-4 h-4"
+                                            />
+                                        </td>
                                         <td className="px-4 py-2 font-mono">{member.membershipNumber}</td>
                                         <td className="px-4 py-2">{member.name}</td>
                                         <td className="px-4 py-2">
