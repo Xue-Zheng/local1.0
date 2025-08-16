@@ -778,11 +778,16 @@ E tū Events Team`
                                             className="w-full border rounded px-3 py-2"
                                         >
                                             <option value="">All Time Preferences</option>
-                                            <option value="morning">Morning (10:30 AM)</option>
-                                            <option value="lunchtime">Lunchtime (12:30 PM)</option>
-                                            <option value="afternoon">Afternoon (2:30 PM)</option>
-                                            <option value="after work">After Work</option>
-                                            <option value="night shift">Night Shift</option>
+                                            <option value="morning">Morning Only</option>
+                                            <option value="lunchtime">Lunchtime Only</option>
+                                            <option value="afternoon">Afternoon Only</option>
+                                            <option value="after work">After Work Only</option>
+                                            <option value="night shift">Night Shift Only</option>
+                                            <option value="morning,lunchtime">Morning + Lunchtime</option>
+                                            <option value="morning,afternoon">Morning + Afternoon</option>
+                                            <option value="lunchtime,afternoon">Lunchtime + Afternoon</option>
+                                            <option value="morning,lunchtime,afternoon">All Three Times</option>
+                                            <option value="no_preference">No Preference Selected</option>
                                         </select>
                                     </div>
                                 </>

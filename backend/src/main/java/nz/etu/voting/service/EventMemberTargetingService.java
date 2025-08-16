@@ -268,7 +268,25 @@ public class EventMemberTargetingService {
             filteredMembers = filteredMembers.stream()
                     .filter(em -> {
                         String prefs = em.getPreferredTimesJson();
+                        
+                        if ("no_preference".equals(specificTimePreference)) {
+                            return prefs == null || prefs.isEmpty() || "[]".equals(prefs);
+                        }
+                        
                         if (prefs == null || prefs.isEmpty()) return false;
+                        
+                        // Handle combination filters
+                        if (specificTimePreference.contains(",")) {
+                            String[] requiredPrefs = specificTimePreference.split(",");
+                            for (String reqPref : requiredPrefs) {
+                                if (!prefs.contains(reqPref.trim())) {
+                                    return false;
+                                }
+                            }
+                            return true;
+                        }
+                        
+                        // Handle single preference filter
                         return prefs.contains(specificTimePreference);
                     })
                     .collect(Collectors.toList());
