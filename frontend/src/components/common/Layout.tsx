@@ -1,5 +1,5 @@
 'use client';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Header from './Header';
@@ -28,9 +28,22 @@ const Layout = ({ children, showHeader = true, showFooter = true }: LayoutProps)
     const router = useRouter();
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [expandedGroups, setExpandedGroups] = useState<Set<string>>(new Set(['BMM Management']));
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     // Check if we're on an admin page
     const isAdminPage = router.pathname.startsWith('/admin/');
+    
+    // Check authentication for admin pages
+    useEffect(() => {
+        if (isAdminPage) {
+            const token = localStorage.getItem('adminToken');
+            if (!token && router.pathname !== '/admin/login') {
+                router.push('/admin/login');
+                return;
+            }
+            setIsAuthenticated(!!token);
+        }
+    }, [isAdminPage, router]);
 
     const navGroups: NavGroup[] = [
         {
@@ -101,6 +114,26 @@ const Layout = ({ children, showHeader = true, showFooter = true }: LayoutProps)
     const isActive = (href: string) => router.pathname === href;
 
     if (isAdminPage) {
+        // If not authenticated and not on login page, don't show admin navigation
+        if (!isAuthenticated && router.pathname !== '/admin/login') {
+            return (
+                <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+                    {children}
+                    <ToastContainer />
+                </div>
+            );
+        }
+        
+        // If on login page, show simple layout
+        if (router.pathname === '/admin/login') {
+            return (
+                <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+                    {children}
+                    <ToastContainer />
+                </div>
+            );
+        }
+        
         return (
             <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
                 {/* Sidebar */}
