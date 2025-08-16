@@ -495,13 +495,7 @@ export default function TicketPage() {
                                     </div>
                                 )}
 
-                                {ticketData.specialVoteEligible && (
-                                    <div className="mb-6 p-3 bg-yellow-50 dark:bg-yellow-900/30 rounded-lg">
-                                        <p className="text-sm font-medium text-yellow-800 dark:text-yellow-200">
-                                            Special Vote Eligible - {ticketData.region}
-                                        </p>
-                                    </div>
-                                )}
+                                {/* Special vote eligibility display removed per user request */}
 
                                 <div className="flex justify-center mb-6">
                                     <QRCodeSVG
