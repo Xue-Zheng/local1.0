@@ -13,6 +13,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.*;
+import nz.etu.voting.service.EmailService;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -91,8 +95,24 @@ public class TicketEmailService {
             criteria.put("memberIds", List.of(eventMember.getId()));
             requestBody.put("criteria", criteria);
 
+            // Get current admin token from request context
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
+            
+            try {
+                ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+                if (attributes != null) {
+                    HttpServletRequest currentRequest = attributes.getRequest();
+                    String authHeader = currentRequest.getHeader("Authorization");
+                    if (authHeader != null) {
+                        headers.set("Authorization", authHeader);
+                        log.info("Using admin token for internal API call");
+                    }
+                }
+            } catch (Exception e) {
+                log.warn("Could not get admin token from request context: {}", e.getMessage());
+            }
+            
             HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
 
             ResponseEntity<Map> response = restTemplate.postForEntity(
