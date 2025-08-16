@@ -35,15 +35,18 @@ const Layout = ({ children, showHeader = true, showFooter = true }: LayoutProps)
     
     // Check authentication for admin pages
     useEffect(() => {
-        if (isAdminPage) {
+        if (isAdminPage && router.pathname !== '/admin/login') {
             const token = localStorage.getItem('adminToken');
-            if (!token && router.pathname !== '/admin/login') {
-                router.push('/admin/login');
+            if (!token) {
+                // No token, immediately redirect to login
+                router.replace('/admin/login');
                 return;
             }
-            setIsAuthenticated(!!token);
+            setIsAuthenticated(true);
+        } else if (router.pathname === '/admin/login') {
+            setIsAuthenticated(false);
         }
-    }, [isAdminPage, router]);
+    }, [isAdminPage, router.pathname, router]);
 
     const navGroups: NavGroup[] = [
         {
@@ -114,8 +117,8 @@ const Layout = ({ children, showHeader = true, showFooter = true }: LayoutProps)
     const isActive = (href: string) => router.pathname === href;
 
     if (isAdminPage) {
-        // If not authenticated and not on login page, don't show admin navigation
-        if (!isAuthenticated && router.pathname !== '/admin/login') {
+        // If on login page, show simple layout
+        if (router.pathname === '/admin/login') {
             return (
                 <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
                     {children}
@@ -124,11 +127,14 @@ const Layout = ({ children, showHeader = true, showFooter = true }: LayoutProps)
             );
         }
         
-        // If on login page, show simple layout
-        if (router.pathname === '/admin/login') {
+        // If not authenticated, show loading while redirecting
+        if (!isAuthenticated) {
             return (
-                <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-                    {children}
+                <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+                    <div className="text-center">
+                        <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-4 border-purple-500"></div>
+                        <p className="mt-4 text-lg text-gray-700 dark:text-gray-300">Checking authentication...</p>
+                    </div>
                     <ToastContainer />
                 </div>
             );
