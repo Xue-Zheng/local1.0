@@ -78,7 +78,7 @@ public class TicketEmailService {
                     eventMember.getEvent().getName(),
                     eventMember.getEvent().getEventCode());
 
-            String message = buildTicketEmailTemplate(eventMember, ticketUrl);
+            String message = buildBMMTicketEmailContentForStratum(eventMember, ticketUrl);
 
             // Send via send-advanced API endpoint
             Map<String, Object> requestBody = new HashMap<>();
