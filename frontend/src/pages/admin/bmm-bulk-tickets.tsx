@@ -40,6 +40,8 @@ export default function BMMBulkTickets() {
     const [eventId, setEventId] = useState<number | null>(null);
     const [emailProvider, setEmailProvider] = useState<'STRATUM' | 'MAILJET'>('STRATUM');
     const [membersWithMobile, setMembersWithMobile] = useState<EventMember[]>([]);
+    const [searchWorksite, setSearchWorksite] = useState('');
+    const [filterByStatus, setFilterByStatus] = useState('all');
 
     useEffect(() => {
         loadBMMEvent();
@@ -307,6 +309,16 @@ P.S. If you cannot attend, please let us know as soon as possible.`;
         toast.success(`Exported ${membersWithMobile.length} SMS records for ClickSend`);
     };
 
+    // Filter worksite groups based on search and status
+    const filteredWorksiteGroups = worksiteGroups.filter(group => {
+        const matchesSearch = group.worksite.toLowerCase().includes(searchWorksite.toLowerCase());
+        const matchesStatus = filterByStatus === 'all' ||
+            (filterByStatus === 'pending' && group.pendingTickets > 0) ||
+            (filterByStatus === 'sent' && group.ticketsSent > 0) ||
+            (filterByStatus === 'completed' && group.pendingTickets === 0);
+        return matchesSearch && matchesStatus;
+    });
+
     return (
         <Layout>
             <div className="space-y-6">
@@ -333,6 +345,41 @@ P.S. If you cannot attend, please let us know as soon as possible.`;
                 {/* Worksite Overview */}
                 <div className="bg-white rounded-lg shadow-md p-6">
                     <h2 className="text-xl font-semibold mb-4">Worksite Groups</h2>
+                    
+                    {/* Search and Filter Controls */}
+                    <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Search Worksite</label>
+                            <input
+                                type="text"
+                                placeholder="Search by worksite name..."
+                                value={searchWorksite}
+                                onChange={(e) => setSearchWorksite(e.target.value)}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Filter by Status</label>
+                            <select
+                                value={filterByStatus}
+                                onChange={(e) => setFilterByStatus(e.target.value)}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            >
+                                <option value="all">All Worksites</option>
+                                <option value="pending">With Pending Tickets</option>
+                                <option value="sent">With Sent Tickets</option>
+                                <option value="completed">All Tickets Sent</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    {/* Results Summary */}
+                    <div className="mb-4 text-sm text-gray-600">
+                        Showing {filteredWorksiteGroups.length} of {worksiteGroups.length} worksites
+                        {searchWorksite && ` matching "${searchWorksite}"`}
+                        {filterByStatus !== 'all' && ` with ${filterByStatus} status`}
+                    </div>
+                    
                     <div className="overflow-x-auto">
                         <table className="min-w-full table-auto">
                             <thead>
@@ -346,7 +393,7 @@ P.S. If you cannot attend, please let us know as soon as possible.`;
                             </tr>
                             </thead>
                             <tbody>
-                            {worksiteGroups.map((group) => {
+                            {filteredWorksiteGroups.map((group) => {
                                 // Get forum from first member in the group
                                 const forum = group.members[0]?.forumDesc || 'N/A';
                                 return (
