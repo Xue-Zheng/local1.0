@@ -21,6 +21,7 @@ interface RegistrationMember {
     hasRegistered: boolean;
     isAttending: boolean;
     isSpecialVote: boolean;
+    specialVoteRequested: boolean;
     absenceReason: string;
     regionDesc: string;
     workplace: string;
@@ -31,6 +32,9 @@ interface RegistrationMember {
     smsSent: boolean;
     hasEmail: boolean;
     hasMobile: boolean;
+    address?: string;
+    ageOfMember?: string;
+    specialVoteApplicationReason?: string;
 }
 
 interface RegistrationAnalytics {
@@ -687,16 +691,26 @@ export default function RegistrationDashboardPage() {
                                                             <div className="flex flex-col space-y-1">
                                                                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
                                                                         member.isAttending ? 'bg-green-100 text-green-800' :
-                                                                            member.isSpecialVote ? 'bg-purple-100 text-purple-800' : 'bg-red-100 text-red-800'
+                                                                            member.specialVoteRequested ? 'bg-purple-100 text-purple-800' : 'bg-red-100 text-red-800'
                                                                     }`}>
                                                                         {member.isAttending ? '✅ Attending' :
-                                                                            member.isSpecialVote ? '🗳️ Special Vote' : '❌ Not Attending'}
+                                                                            member.specialVoteRequested ? '🗳️ Special Vote' : '❌ Not Attending'}
                                                                     </span>
                                                             </div>
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
                                                             <div>{member.regionDesc}</div>
                                                             <div className="text-gray-500 dark:text-gray-400">{member.siteSubIndustryDesc}</div>
+                                                            {member.specialVoteRequested && (
+                                                                <div className="mt-2 p-2 bg-purple-50 dark:bg-purple-900/20 rounded text-xs">
+                                                                    <div className="font-semibold text-purple-800 dark:text-purple-200 mb-1">Special Vote Details:</div>
+                                                                    {member.address && <div><strong>Address:</strong> {member.address}</div>}
+                                                                    {member.workplace && <div><strong>Worksite:</strong> {member.workplace}</div>}
+                                                                    {member.ageOfMember && <div><strong>Age:</strong> {member.ageOfMember}</div>}
+                                                                    {member.absenceReason && <div><strong>Absence Reason:</strong> {member.absenceReason}</div>}
+                                                                    {member.specialVoteApplicationReason && <div><strong>Application Reason:</strong> {member.specialVoteApplicationReason}</div>}
+                                                                </div>
+                                                            )}
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap text-sm">
                                                             <div className="flex space-x-2">

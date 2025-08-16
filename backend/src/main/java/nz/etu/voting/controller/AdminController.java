@@ -75,7 +75,7 @@ public class AdminController {
                     .filter(m -> m.getIsAttending() != null && m.getIsAttending())
                     .count();
             long specialVoteMembers = eventMembers.stream()
-                    .filter(m -> m.getIsSpecialVote() != null && m.getIsSpecialVote())
+                    .filter(m -> m.getSpecialVoteRequested() != null && m.getSpecialVoteRequested())
                     .count();
             long votedMembers = eventMembers.stream()
                     .filter(m -> m.getHasVoted() != null && m.getHasVoted())

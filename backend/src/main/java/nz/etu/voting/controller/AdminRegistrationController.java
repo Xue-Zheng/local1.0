@@ -1098,7 +1098,7 @@ public class AdminRegistrationController {
             long totalMembers = members.size();
             long registeredMembers = members.stream().filter(m -> m.getHasRegistered() != null && m.getHasRegistered()).count();
             long attendingMembers = members.stream().filter(m -> m.getIsAttending() != null && m.getIsAttending()).count();
-            long specialVoteMembers = members.stream().filter(m -> m.getIsSpecialVote() != null && m.getIsSpecialVote()).count();
+            long specialVoteMembers = members.stream().filter(m -> m.getSpecialVoteRequested() != null && m.getSpecialVoteRequested()).count();
             long hasEmailMembers = members.stream()
                     .filter(m -> m.getPrimaryEmail() != null &&
                             !m.getPrimaryEmail().trim().isEmpty() &&

@@ -183,7 +183,7 @@ public class EventMemberTargetingService {
         // CRITICAL: 后处理：处理数据库查询无法直接支持的复杂条件
         if (registrationStatus != null && registrationStatus.equals("special_vote")) {
             filteredMembers = filteredMembers.stream()
-                    .filter(em -> em.getIsSpecialVote() != null && em.getIsSpecialVote())
+                    .filter(em -> em.getSpecialVoteRequested() != null && em.getSpecialVoteRequested())
                     .collect(Collectors.toList());
         }
 

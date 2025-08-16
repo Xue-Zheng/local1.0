@@ -21,6 +21,8 @@ interface CheckinMember {
     token: string;
     qrCodeEmailSent: boolean;
     hasVoted: boolean;
+    forumDesc?: string;
+    assignedVenueFinal?: string;
     // 🔥 新增：Checkin追踪字段
     checkedIn?: boolean;
     checkInTime?: string;
@@ -638,9 +640,40 @@ export default function CheckinPage() {
             (filterStatus === 'attending' && member.isAttending);
         const matchesRegion = filterRegion === 'all' || member.regionDesc === filterRegion;
         return matchesSearch && matchesStatus && matchesRegion;
+    }).sort((a, b) => {
+        // Sort by checkin time - checked in members first, then by time
+        const aCheckedIn = a.checkinTime || a.checkInTime;
+        const bCheckedIn = b.checkinTime || b.checkInTime;
+        
+        if (aCheckedIn && !bCheckedIn) return -1;
+        if (!aCheckedIn && bCheckedIn) return 1;
+        if (aCheckedIn && bCheckedIn) {
+            return new Date(bCheckedIn).getTime() - new Date(aCheckedIn).getTime(); // Most recent first
+        }
+        return a.name.localeCompare(b.name); // Alphabetical for non-checked-in
     });
 
     const uniqueRegions = [...new Set(members.map(member => member.regionDesc))].filter(Boolean);
+
+    // Format time in Auckland timezone
+    const formatAucklandTime = (dateString: string): string => {
+        if (!dateString) return '';
+        try {
+            const date = new Date(dateString);
+            return date.toLocaleString('en-NZ', {
+                timeZone: 'Pacific/Auckland',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            });
+        } catch (error) {
+            return dateString;
+        }
+    };
 
     if (!isAuthorized) return null;
 
@@ -880,7 +913,7 @@ Voted
 Checked In
 </span>
                                                             <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                                                {new Date(member.checkinTime || member.checkInTime || '').toLocaleString()}
+                                                                {formatAucklandTime(member.checkinTime || member.checkInTime || '')}
                                                             </div>
                                                             {member.checkInMethod && (
                                                                 <div className="text-xs text-blue-600 dark:text-blue-400 mt-1">
@@ -914,7 +947,19 @@ Not Checked In
                                                             )}
                                                         </div>
                                                     ) : (
-                                                        <span className="text-gray-400 dark:text-gray-500 text-sm">-</span>
+                                                        <div className="text-sm">
+                                                            <span className="text-gray-400 dark:text-gray-500">-</span>
+                                                            {(member.forumDesc || member.assignedVenueFinal) && (
+                                                                <div className="text-xs text-gray-400 mt-1">
+                                                                    {member.forumDesc && (
+                                                                        <div>📍 Forum: {member.forumDesc}</div>
+                                                                    )}
+                                                                    {member.assignedVenueFinal && member.assignedVenueFinal !== member.forumDesc && (
+                                                                        <div>🏢 Venue: {member.assignedVenueFinal}</div>
+                                                                    )}
+                                                                </div>
+                                                            )}
+                                                        </div>
                                                     )}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">

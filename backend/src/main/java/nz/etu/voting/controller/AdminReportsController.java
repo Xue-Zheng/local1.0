@@ -52,7 +52,7 @@ public class AdminReportsController {
                 data.put("registeredMembers", eventMembers.stream().filter(m -> m.getHasRegistered() != null && m.getHasRegistered()).count());
                 data.put("attendingMembers", eventMembers.stream().filter(m -> m.getIsAttending() != null && m.getIsAttending()).count());
                 data.put("checkedInMembers", eventMembers.stream().filter(m -> m.getCheckedIn() != null && m.getCheckedIn()).count());
-                data.put("specialVoteMembers", eventMembers.stream().filter(m -> m.getIsSpecialVote() != null && m.getIsSpecialVote()).count());
+                data.put("specialVoteMembers", eventMembers.stream().filter(m -> m.getSpecialVoteRequested() != null && m.getSpecialVoteRequested()).count());
 
                 // Contact method statistics
                 data.put("hasEmail", eventMembers.stream().filter(m -> m.getHasEmail() != null && m.getHasEmail()).count());
