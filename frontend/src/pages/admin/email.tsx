@@ -9,6 +9,7 @@ interface FilterOptions {
     regions: string[];
     industries: string[];
     subIndustries: string[];
+    forums: string[];
 }
 
 interface EmailTemplate {
@@ -28,7 +29,8 @@ export default function EmailBroadcastPage() {
     const [filterOptions, setFilterOptions] = useState<FilterOptions>({
         regions: [],
         industries: [],
-        subIndustries: []
+        subIndustries: [],
+        forums: []
     });
 
     const [filters, setFilters] = useState({
@@ -46,6 +48,8 @@ export default function EmailBroadcastPage() {
         excludeForums: '',
         includeForums: '',
         specificTimePreference: '',
+        forumDesc: '', // Add forum filter
+        attendanceConfirmed: '', // Add attendance confirmation filter
         // Search filters
         searchName: '',
         searchEmail: '',
@@ -250,7 +254,8 @@ E tū Events Team`
                 setFilterOptions({
                     regions: response.data.data.regions || [],
                     industries: response.data.data.industries || [],
-                    subIndustries: response.data.data.subIndustries || []
+                    subIndustries: response.data.data.subIndustries || [],
+                    forums: response.data.data.forums || []
                 });
             }
         } catch (error) {
@@ -328,6 +333,8 @@ E tū Events Team`
             if (filters.excludeForums) criteria.excludeForums = filters.excludeForums;
             if (filters.includeForums) criteria.includeForums = filters.includeForums;
             if (filters.specificTimePreference) criteria.specificTimePreference = filters.specificTimePreference;
+            if (filters.forumDesc) criteria.forumDesc = filters.forumDesc;
+            if (filters.attendanceConfirmed) criteria.attendanceConfirmed = filters.attendanceConfirmed;
 
             // Contact method filter
             if (filters.hasEmail && !filters.hasMobile) {
@@ -729,6 +736,38 @@ E tū Events Team`
                                         </select>
                                         <p className="text-xs text-gray-500 mt-1">
                                             Note: Greymouth venue has been cancelled
+                                        </p>
+                                    </div>
+                                    <div className="mb-4">
+                                        <label className="block text-sm font-medium mb-2">Specific Forum Filter</label>
+                                        <select
+                                            value={filters.forumDesc}
+                                            onChange={(e) => setFilters({...filters, forumDesc: e.target.value})}
+                                            className="w-full border rounded px-3 py-2"
+                                        >
+                                            <option value="">All Forums</option>
+                                            {filterOptions.forums.map(forum => (
+                                                <option key={forum} value={forum}>{forum}</option>
+                                            ))}
+                                        </select>
+                                        <p className="text-xs text-gray-500 mt-1">
+                                            Filter by specific forum/venue location
+                                        </p>
+                                    </div>
+                                    <div className="mb-4">
+                                        <label className="block text-sm font-medium mb-2">Attendance Confirmation</label>
+                                        <select
+                                            value={filters.attendanceConfirmed}
+                                            onChange={(e) => setFilters({...filters, attendanceConfirmed: e.target.value})}
+                                            className="w-full border rounded px-3 py-2"
+                                        >
+                                            <option value="">All Members</option>
+                                            <option value="confirmed">Confirmed Attendance</option>
+                                            <option value="declined">Declined Attendance</option>
+                                            <option value="no_response">No Response/Not Decided</option>
+                                        </select>
+                                        <p className="text-xs text-gray-500 mt-1">
+                                            Filter by attendance confirmation status
                                         </p>
                                     </div>
                                     <div className="mb-4">

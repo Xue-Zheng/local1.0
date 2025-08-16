@@ -198,6 +198,32 @@ public class EventMemberTargetingService {
                     .collect(Collectors.toList());
         }
 
+        // Filter by attendance confirmation status
+        String attendanceConfirmed = getStringFromCriteria(criteria, "attendanceConfirmed");
+        if (attendanceConfirmed != null && !attendanceConfirmed.isEmpty()) {
+            filteredMembers = filteredMembers.stream()
+                    .filter(em -> {
+                        String stage = em.getBmmRegistrationStage();
+                        switch (attendanceConfirmed) {
+                            case "confirmed":
+                                return "ATTENDANCE_CONFIRMED".equals(stage);
+                            case "declined":
+                                return "ATTENDANCE_DECLINED".equals(stage);
+                            case "no_response":
+                                // No response means not confirmed and not declined
+                                return stage == null || 
+                                       "PENDING".equals(stage) || 
+                                       "INVITED".equals(stage) || 
+                                       "PREFERENCE_SUBMITTED".equals(stage) ||
+                                       "VENUE_ASSIGNED".equals(stage);
+                            default:
+                                return true; // Show all if unknown filter value
+                        }
+                    })
+                    .collect(Collectors.toList());
+            log.info("Applied attendance confirmation filter: {} - remaining members: {}", attendanceConfirmed, filteredMembers.size());
+        }
+
         // Handle forum inclusion filter (only include specific forums)
         String includeForums = getStringFromCriteria(criteria, "includeForums");
         if (includeForums != null && !includeForums.isEmpty()) {

@@ -948,6 +948,7 @@ public class AdminRegistrationController {
                 emptyOptions.put("subIndustries", new ArrayList<>());
                 emptyOptions.put("workplaces", new ArrayList<>());
                 emptyOptions.put("employers", new ArrayList<>());
+                emptyOptions.put("forums", new ArrayList<>());
 
                 Map<String, Object> response = new HashMap<>();
                 response.put("status", "success");
@@ -990,10 +991,16 @@ public class AdminRegistrationController {
                     .filter(s -> !s.trim().isEmpty())
                     .collect(Collectors.toSet());
 
+            Set<String> forums = allMembers.stream()
+                    .map(EventMember::getForumDesc)
+                    .filter(Objects::nonNull)
+                    .filter(s -> !s.trim().isEmpty())
+                    .collect(Collectors.toSet());
+
             // Note: employerName is now stored directly in EventMember.employer field
 
-            log.info("Filter options extracted - Regions: {}, Industries: {}, SubIndustries: {}, Workplaces: {}, Employers: {}",
-                    regions.size(), industries.size(), subIndustries.size(), workplaces.size(), employers.size());
+            log.info("Filter options extracted - Regions: {}, Industries: {}, SubIndustries: {}, Workplaces: {}, Employers: {}, Forums: {}",
+                    regions.size(), industries.size(), subIndustries.size(), workplaces.size(), employers.size(), forums.size());
 
             // Log sample data for debugging
             if (!industries.isEmpty()) {
@@ -1009,6 +1016,7 @@ public class AdminRegistrationController {
             options.put("subIndustries", subIndustries.stream().sorted().collect(Collectors.toList()));
             options.put("workplaces", workplaces.stream().sorted().collect(Collectors.toList()));
             options.put("employers", employers.stream().sorted().collect(Collectors.toList()));
+            options.put("forums", forums.stream().sorted().collect(Collectors.toList()));
 
             Map<String, Object> response = new HashMap<>();
             response.put("status", "success");
