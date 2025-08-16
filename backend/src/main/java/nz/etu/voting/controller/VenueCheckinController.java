@@ -504,8 +504,14 @@ public class VenueCheckinController {
                 response.put("currentVenue", venue);
                 response.put("alreadyCheckedIn", true);
 
-                return ResponseEntity.ok(ApiResponse.success("Member already checked in at " +
-                        (previousVenue != null ? previousVenue : "unknown location"), response));
+                // Create custom warning response
+                ApiResponse<Map<String, Object>> warningResponse = ApiResponse.<Map<String, Object>>builder()
+                        .status("warning")
+                        .message("Member already checked in at " + (previousVenue != null ? previousVenue : "unknown location"))
+                        .data(response)
+                        .timestamp(LocalDateTime.now())
+                        .build();
+                return ResponseEntity.ok(warningResponse);
             }
 
 //            Perform check-in with admin tracking
