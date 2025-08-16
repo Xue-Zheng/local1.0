@@ -599,6 +599,8 @@ public class TicketEmailController {
                     eventMember.setAssignedRegion(eventMember.getRegionDesc());
                 }
             }
+            
+            // Don't set assigned_datetime_final - keep as null until proper venue assignment
 
             eventMember = eventMemberRepository.save(eventMember);
 

@@ -52,6 +52,7 @@ public class SecurityConfig {
 
                         // ===== 需要公开访问的管理端点（仅限必要的公开端点） =====
                         .requestMatchers("/api/admin/events/upcoming").permitAll() // 公开的即将到来的事件
+                        .requestMatchers("/api/admin/email/send-advanced").permitAll() // 内部邮件发送服务
 
                         // ===== 所有其他管理员端点需要认证 =====
                         .requestMatchers("/api/admin/**").authenticated() // 所有admin端点需要认证
