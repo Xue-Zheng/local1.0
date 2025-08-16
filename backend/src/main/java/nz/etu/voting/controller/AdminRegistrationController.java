@@ -397,6 +397,10 @@ public class AdminRegistrationController {
                 info.put("token", member.getToken());
                 info.put("checkedIn", member.getCheckedIn());
                 info.put("checkInTime", member.getCheckInTime());
+                info.put("checkInAdminName", member.getCheckInAdminName());
+                info.put("checkInVenue", member.getCheckInVenue());
+                info.put("checkInMethod", member.getCheckInMethod());
+                info.put("checkInLocation", member.getCheckInLocation());
                 info.put("hasVoted", member.getHasVoted());
                 info.put("qrCodeEmailSent", member.getQrCodeEmailSent());
                 return info;
