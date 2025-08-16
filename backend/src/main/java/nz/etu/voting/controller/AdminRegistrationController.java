@@ -398,6 +398,7 @@ public class AdminRegistrationController {
                 info.put("checkedIn", member.getCheckedIn());
                 info.put("checkInTime", member.getCheckInTime());
                 info.put("checkInAdminName", member.getCheckInAdminName());
+                info.put("checkInAdminUsername", member.getCheckInAdminUsername());
                 info.put("checkInVenue", member.getCheckInVenue());
                 info.put("checkInMethod", member.getCheckInMethod());
                 info.put("checkInLocation", member.getCheckInLocation());
