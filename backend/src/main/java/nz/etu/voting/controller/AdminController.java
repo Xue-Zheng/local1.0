@@ -719,8 +719,8 @@ public class AdminController {
 
             stats.put("specialVoteEligible", specialVoteEligible);
 
-            // Count special vote requested (actually applied for special vote)
-            long specialVoteRequested = confirmedMembers.stream()
+            // Count special vote requested (actually applied for special vote) - include ALL members, not just confirmed
+            long specialVoteRequested = allMembers.stream()
                     .filter(member -> Boolean.TRUE.equals(member.getSpecialVoteRequested()))
                     .count();
 
@@ -962,6 +962,13 @@ public class AdminController {
                         confirmation.put("jobTitle", member.getJobTitle());
                         confirmation.put("location", member.getLocation());
                         confirmation.put("dateOfBirth", member.getDob());
+                        
+                        // Additional fields for special vote details
+                        confirmation.put("address", member.getAddress());
+                        confirmation.put("workplace", member.getWorkplace());
+                        confirmation.put("ageOfMember", member.getAgeOfMember());
+                        confirmation.put("telephoneMobile", member.getTelephoneMobile());
+                        confirmation.put("primaryEmail", member.getPrimaryEmail());
 
                         return confirmation;
                     })
