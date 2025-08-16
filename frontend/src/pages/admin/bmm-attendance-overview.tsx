@@ -69,6 +69,12 @@ interface MemberConfirmation {
     location?: string;
     dateOfBirth?: string;
     employer?: string;
+    // Additional fields for special vote details
+    address?: string;
+    workplace?: string;
+    ageOfMember?: string;
+    telephoneMobile?: string;
+    primaryEmail?: string;
 }
 
 export default function BmmAttendanceOverview() {
@@ -695,6 +701,31 @@ export default function BmmAttendanceOverview() {
                                                                     Absence Reason: {selectedMember.absenceReason}
                                                                 </p>
                                                             )}
+                                                            
+                                                            {/* Additional Special Vote Details */}
+                                                            <div className="mt-3 p-3 bg-purple-50 rounded-lg border border-purple-200">
+                                                                <h4 className="font-semibold text-purple-800 mb-2">Member Details:</h4>
+                                                                <div className="space-y-1 text-sm">
+                                                                    {selectedMember.membershipNumber && (
+                                                                        <div><strong>Membership #:</strong> {selectedMember.membershipNumber}</div>
+                                                                    )}
+                                                                    {selectedMember.primaryEmail && (
+                                                                        <div><strong>Email:</strong> {selectedMember.primaryEmail}</div>
+                                                                    )}
+                                                                    {selectedMember.telephoneMobile && (
+                                                                        <div><strong>Mobile:</strong> {selectedMember.telephoneMobile}</div>
+                                                                    )}
+                                                                    {selectedMember.address && (
+                                                                        <div><strong>Address:</strong> {selectedMember.address}</div>
+                                                                    )}
+                                                                    {selectedMember.workplace && (
+                                                                        <div><strong>Worksite:</strong> {selectedMember.workplace}</div>
+                                                                    )}
+                                                                    {selectedMember.ageOfMember && (
+                                                                        <div><strong>Age:</strong> {selectedMember.ageOfMember}</div>
+                                                                    )}
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     )}
                                                 </div>
