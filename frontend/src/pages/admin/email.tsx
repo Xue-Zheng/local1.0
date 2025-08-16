@@ -395,6 +395,57 @@ E tū Events Team`
         }
     };
 
+    const handleSendBulkTickets = async () => {
+        if (selectedRecipients.size === 0) {
+            toast.error('Please select members to send tickets');
+            return;
+        }
+
+        const selectedMemberIds = Array.from(selectedRecipients);
+        const selectedMembers = recipients.filter(r => 
+            selectedMemberIds.includes(r.id?.toString() || r.email)
+        );
+
+        const confirmMessage = `Send tickets to ${selectedMembers.length} selected members?`;
+        if (!confirm(confirmMessage)) {
+            return;
+        }
+
+        setSending(true);
+        try {
+            let successCount = 0;
+            let failCount = 0;
+
+            // Generate and send tickets using same logic as bulk-tickets
+            for (const member of selectedMembers) {
+                try {
+                    await api.post(`/admin/ticket-emails/member/${member.id}/generate-and-send`);
+                    successCount++;
+                } catch (error) {
+                    console.log(`Ticket generation failed for ${member.name}:`, error);
+                    failCount++;
+                }
+            }
+
+            // Report results
+            if (successCount > 0) {
+                toast.success(`Successfully sent ${successCount} tickets using standard template`);
+            }
+            if (failCount > 0) {
+                toast.error(`Failed to send ${failCount} tickets`);
+            }
+
+            // Clear selection
+            setSelectedRecipients(new Set());
+
+        } catch (error: any) {
+            console.error('Failed to send bulk tickets:', error);
+            toast.error('Failed to send bulk tickets');
+        } finally {
+            setSending(false);
+        }
+    };
+
     const handleSend = async () => {
         if (!subject || !content) {
             toast.error('Please enter subject and content');
@@ -1005,15 +1056,28 @@ E tū Events Team`
                             {/* Send button */}
                             {previewMode && recipients.length > 0 && (
                                 <div className="mt-6 flex justify-end space-x-4">
-                                    {/* Send Ticket Button - Only show for single BMM member selection */}
-                                    {selectedEvent?.eventType === 'BMM_VOTING' && selectedRecipients.size === 1 && (
-                                        <button
-                                            onClick={handleSendTicket}
-                                            disabled={sending}
-                                            className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 disabled:bg-gray-400 transition-colors"
-                                        >
-                                            {sending ? 'Sending...' : 'Send BMM Ticket'}
-                                        </button>
+                                    {/* Send Ticket Buttons - For BMM events */}
+                                    {selectedEvent?.eventType === 'BMM_VOTING' && selectedRecipients.size > 0 && (
+                                        <div className="flex gap-2">
+                                            {selectedRecipients.size === 1 && (
+                                                <button
+                                                    onClick={handleSendTicket}
+                                                    disabled={sending}
+                                                    className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 disabled:bg-gray-400 transition-colors"
+                                                >
+                                                    {sending ? 'Sending...' : 'Send BMM Ticket'}
+                                                </button>
+                                            )}
+                                            {selectedRecipients.size > 1 && (
+                                                <button
+                                                    onClick={handleSendBulkTickets}
+                                                    disabled={sending}
+                                                    className="bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700 disabled:bg-gray-400 transition-colors"
+                                                >
+                                                    {sending ? 'Sending...' : `Send ${selectedRecipients.size} BMM Tickets`}
+                                                </button>
+                                            )}
+                                        </div>
                                     )}
 
                                     <button

@@ -218,12 +218,17 @@ P.S. If you cannot attend, please let us know as soon as possible.`;
             // Prepare member IDs and ensure tickets are generated
             const memberIds = selectedMembers.map(m => m.id);
 
-            // First, generate tickets for all members
+            // Generate and send tickets using standard TicketEmailService (same as confirmation flow)
+            let successCount = 0;
+            let failCount = 0;
+            
             for (const member of membersToSend) {
                 try {
                     await api.post(`/admin/ticket-emails/member/${member.id}/generate-and-send`);
+                    successCount++;
                 } catch (error) {
-                    console.log(`Ticket generation for ${member.name}:`, error);
+                    console.log(`Ticket generation failed for ${member.name}:`, error);
+                    failCount++;
                 }
             }
 
@@ -247,27 +252,12 @@ P.S. If you cannot attend, please let us know as soon as possible.`;
                 setMembersWithMobile(withMobile);
             }
 
-            // Send emails only to members with email addresses
-            if (membersWithEmail.length > 0) {
-                const emailMemberIds = membersWithEmail.map(m => m.id);
-                const emailRequest = {
-                    eventId: eventId,
-                    subject: subject,
-                    content: content,
-                    provider: emailProvider,
-                    criteria: {
-                        memberIds: emailMemberIds
-                    }
-                };
-
-                const response = await api.post('/admin/email/send-advanced', emailRequest);
-
-                if (response.data.status === 'success') {
-                    const emailResult = response.data;
-                    toast.success(`Successfully queued ${emailResult.data?.successCount || membersWithEmail.length} ticket emails`);
-                } else {
-                    toast.error('Failed to send ticket emails');
-                }
+            // Report results
+            if (successCount > 0) {
+                toast.success(`Successfully sent ${successCount} tickets using standard template`);
+            }
+            if (failCount > 0) {
+                toast.error(`Failed to send ${failCount} tickets`);
             }
 
             // Reload data
