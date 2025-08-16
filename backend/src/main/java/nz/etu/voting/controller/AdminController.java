@@ -969,6 +969,7 @@ public class AdminController {
                         confirmation.put("ageOfMember", member.getAgeOfMember());
                         confirmation.put("telephoneMobile", member.getTelephoneMobile());
                         confirmation.put("primaryEmail", member.getPrimaryEmail());
+                        confirmation.put("absenceReason", member.getAbsenceReason());
 
                         return confirmation;
                     })
