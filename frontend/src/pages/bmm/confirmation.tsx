@@ -14,8 +14,16 @@ const SINGLE_SESSION_VENUES: Record<string, string> = {
     'Nelson': '12:30 PM'     // Only lunchtime
 };
 
-// Venues with limited sessions (no afternoon)
-const LIMITED_SESSION_VENUES = ['Napier'];  // Only morning and afternoon, no lunchtime
+// Venues with only morning + lunchtime (no afternoon)
+const TWO_SESSION_VENUES_MORNING_LUNCH = [
+    'Auckland North Shore', 'Auckland West', 'Manukau 3', 'Pukekohe', 'Whangarei',
+    'Christchurch 2', 'Rotorua', 'Hamilton 1', 'Hamilton 2', 'Tauranga', 'Dunedin',
+    'Invercargill', 'New Plymouth', 'Timaru', 'Christchurch 1', 'Wellington 1',
+    'Palmerston North', 'Wellington 2'
+];
+
+// Venues with only morning + afternoon (no lunchtime)
+const TWO_SESSION_VENUES_MORNING_AFTERNOON = ['Napier'];
 
 // Helper function to get assigned time based on venue and preferences
 const getAssignedTime = (forumDesc: string, preferredTimesJson?: string): string => {
@@ -30,15 +38,29 @@ const getAssignedTime = (forumDesc: string, preferredTimesJson?: string): string
             const times = JSON.parse(preferredTimesJson);
 
             // Check venue-specific constraints
-            if (forumDesc === 'Napier') {
-                // Napier only has morning (10:30) and afternoon (14:30)
+            if (TWO_SESSION_VENUES_MORNING_AFTERNOON.includes(forumDesc)) {
+                // Venues with only morning + afternoon (no lunchtime) - e.g., Napier
                 if (times.includes('morning')) return '10:30 AM';
                 if (times.includes('afternoon') || times.includes('after work') || times.includes('night shift')) return '2:30 PM';
-                // If lunchtime preference but not available, default to 12:30 PM per rules
-                return '12:30 PM';
+                if (times.includes('lunchtime')) {
+                    // Lunchtime preference but not available, default to morning
+                    return '10:30 AM';
+                }
+                return '10:30 AM'; // Default to morning
+            }
+            
+            if (TWO_SESSION_VENUES_MORNING_LUNCH.includes(forumDesc)) {
+                // Venues with only morning + lunchtime (no afternoon) - e.g., Palmerston North
+                if (times.includes('morning')) return '10:30 AM';
+                if (times.includes('lunchtime')) return '12:30 PM';
+                if (times.includes('afternoon') || times.includes('after work') || times.includes('night shift')) {
+                    // Afternoon preference but not available, default to lunchtime
+                    return '12:30 PM';
+                }
+                return '10:30 AM'; // Default to morning
             }
 
-            // Standard time mapping
+            // Three-session venues (Manukau 1, Manukau 2, Auckland Central) - standard mapping
             if (times.includes('morning')) return '10:30 AM';
             if (times.includes('lunchtime')) return '12:30 PM';
             if (times.includes('afternoon') || times.includes('after work') || times.includes('night shift')) return '2:30 PM';
