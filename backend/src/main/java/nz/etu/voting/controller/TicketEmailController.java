@@ -584,24 +584,20 @@ public class TicketEmailController {
                 eventMember.setTicketToken(UUID.randomUUID());
             }
 
-            // For bulk ticket sending, mark as TICKET_ONLY (no specific time/venue)
-            // This ensures the same ticket is used regardless of when it's sent
-            if (eventMember.getBmmRegistrationStage() == null ||
-                    eventMember.getBmmRegistrationStage().isEmpty() ||
-                    eventMember.getBmmRegistrationStage().equals("TICKET_ONLY")) {
-                eventMember.setTicketStatus("TICKET_ONLY");
-            } else {
-                eventMember.setTicketStatus("GENERATED");
-            }
-
-            // Mark as attending if not already (for bulk ticket sending)
-            if (!eventMember.getIsAttending()) {
-                eventMember.setIsAttending(true);
-            }
-
-            // Ensure member can check in even without full registration
-            if (eventMember.getBmmRegistrationStage() == null || eventMember.getBmmRegistrationStage().isEmpty()) {
-                eventMember.setBmmRegistrationStage("TICKET_ONLY");
+            // Mark as attending and set to ATTENDANCE_CONFIRMED (same as confirmation flow)
+            eventMember.setIsAttending(true);
+            eventMember.setAttendanceConfirmed(true);
+            eventMember.setBmmRegistrationStage("ATTENDANCE_CONFIRMED");
+            eventMember.setTicketStatus("GENERATED");
+            
+            // Auto-assign venue if not already assigned (same logic as BmmController)
+            if (eventMember.getAssignedVenueFinal() == null || eventMember.getAssignedVenueFinal().isEmpty()) {
+                String forumDesc = eventMember.getForumDesc();
+                if (forumDesc != null && !forumDesc.isEmpty()) {
+                    eventMember.setAssignedVenueFinal(forumDesc);
+                    eventMember.setAssignedVenue(forumDesc);
+                    eventMember.setAssignedRegion(eventMember.getRegionDesc());
+                }
             }
 
             eventMember = eventMemberRepository.save(eventMember);

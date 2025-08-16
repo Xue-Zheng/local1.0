@@ -22,10 +22,12 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-//        只有在没有管理员时才初始化
-        if (adminRepository.count() == 0) {
-            log.info("Initializing default admin user");
-
+        // Check if admin user exists
+        Admin existingAdmin = adminRepository.findByUsername("admin").orElse(null);
+        
+        if (existingAdmin == null) {
+            // Create new admin user if doesn't exist
+            log.info("Creating default admin user");
             Admin admin = Admin.builder()
                     .username("admin")
                     .password(passwordEncoder.encode(defaultAdminPassword))
@@ -36,8 +38,15 @@ public class DataInitializer implements CommandLineRunner {
                     .build();
 
             adminRepository.save(admin);
-
-            log.info("Default admin user created with username: admin (password configured via environment variable)");
+            log.info("Default admin user created with username: admin");
+        } else {
+            // Update existing admin password if it's the old weak password
+            if (passwordEncoder.matches("admin123", existingAdmin.getPassword())) {
+                log.info("Updating admin password to secure version");
+                existingAdmin.setPassword(passwordEncoder.encode(defaultAdminPassword));
+                adminRepository.save(existingAdmin);
+                log.info("Admin password updated to secure version");
+            }
         }
     }
 }
