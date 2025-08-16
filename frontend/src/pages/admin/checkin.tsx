@@ -933,6 +933,9 @@ Not Checked In
                                                             {member.checkInAdminName && (
                                                                 <div className="text-gray-900 dark:text-white">
                                                                     👤 {member.checkInAdminName}
+                                                                    {member.checkInAdminUsername && (
+                                                                        <span className="text-xs text-gray-500 ml-1">({member.checkInAdminUsername})</span>
+                                                                    )}
                                                                 </div>
                                                             )}
                                                             {member.checkInVenue && (
