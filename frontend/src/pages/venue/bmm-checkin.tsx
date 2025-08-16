@@ -358,10 +358,10 @@ export default function BMMCheckinPage() {
 
             if (response.data.status === 'success') {
                 const result: ScanResult = {
-                    memberName: response.data.data.name,
-                    membershipNumber: response.data.data.membershipNumber,
-                    email: response.data.data.primaryEmail,
-                    checkinTime: response.data.data.checkinTime,
+                    memberName: response.data.data?.name || response.data.data?.memberName || 'Unknown Member',
+                    membershipNumber: response.data.data?.membershipNumber || 'Unknown',
+                    email: response.data.data?.primaryEmail || response.data.data?.email || 'Unknown',
+                    checkinTime: response.data.data?.checkinTime || response.data.data?.checkInTime || new Date().toISOString(),
                     venue: venue as string,
                     status: 'success'
                 };
