@@ -139,8 +139,8 @@ public class BmmServiceImpl implements BmmService {
                 if (!preferredVenues.isEmpty()) {
                     eventMember.setAssignedVenueFinal(preferredVenues.get(0));
                 }
-                // 设置一个默认时间
-                eventMember.setAssignedDatetimeFinal(LocalDateTime.of(2025, 9, 15, 14, 0));
+                // 不设置默认时间，保持为null直到管理员分配
+                // eventMember.setAssignedDatetimeFinal(LocalDateTime.of(2025, 9, 15, 14, 0));
             }
             eventMember.setLastActivityAt(LocalDateTime.now());
 
@@ -785,8 +785,8 @@ public class BmmServiceImpl implements BmmService {
                         member.setVenueAssignedBy("SYSTEM");
                         member.setBmmStage("VENUE_ASSIGNED");
 
-                        // Generate a sample date/time (would be based on actual venue schedules)
-                        member.setAssignedDatetimeFinal(LocalDateTime.now().plusDays(30));
+                        // 不设置默认时间，保持为null直到管理员分配
+                        // member.setAssignedDatetimeFinal(LocalDateTime.now().plusDays(30));
 
                         eventMemberRepository.save(member);
                     }

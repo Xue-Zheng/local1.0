@@ -846,29 +846,91 @@ public class TicketEmailService {
 
     // Extract session time based on member preferences
     private String extractSessionTime(EventMember eventMember) {
-        // First check if this is a forumVenueMapping member
         String forumDesc = eventMember.getForumDesc();
+
+        // First check if this is a forumVenueMapping member
         if (forumDesc != null && forumDesc.equals("Greymouth")) {
             // For these special forums, return special instructions
             return "Multiple venues and times available - see options below";
+        }
+
+        // Check single session venues
+        if ("Gisborne".equals(forumDesc) || "Nelson".equals(forumDesc)) {
+            return "12:30 PM";  // Only lunchtime available
         }
 
         // Check if member has preferred times JSON
         String preferredTimesJson = eventMember.getPreferredTimesJson();
         if (preferredTimesJson != null && !preferredTimesJson.isEmpty()) {
             try {
-                // Parse JSON array of preferred times
-                if (preferredTimesJson.contains("morning")) {
-                    return "10:30 AM";
-                } else if (preferredTimesJson.contains("lunchtime")) {
-                    return "12:30 PM";
+                // Check venue-specific constraints
+                if ("Napier".equals(forumDesc)) {
+                    // Napier only has morning (10:30) and afternoon (2:30), no lunchtime
+                    if (preferredTimesJson.contains("morning")) {
+                        return "10:30 AM";
+                    } else if (preferredTimesJson.contains("afternoon") ||
+                            preferredTimesJson.contains("after work") ||
+                            preferredTimesJson.contains("night shift")) {
+                        return "2:30 PM";
+                    } else if (preferredTimesJson.contains("lunchtime")) {
+                        // Lunchtime preference but Napier doesn't have it, default to morning
+                        return "10:30 AM";
+                    }
+                    return "10:30 AM"; // Default for Napier
+                } else if ("Auckland North Shore".equals(forumDesc) || "Auckland West".equals(forumDesc) ||
+                        "Manukau 3".equals(forumDesc) || "Pukekohe".equals(forumDesc) || 
+                        "Whangarei".equals(forumDesc) || "Christchurch 2".equals(forumDesc) ||
+                        "Rotorua".equals(forumDesc) || "Hamilton 1".equals(forumDesc) ||
+                        "Hamilton 2".equals(forumDesc) || "Tauranga".equals(forumDesc) ||
+                        "Dunedin".equals(forumDesc) || "Invercargill".equals(forumDesc) ||
+                        "New Plymouth".equals(forumDesc) || "Timaru".equals(forumDesc) ||
+                        "Christchurch 1".equals(forumDesc) || "Wellington 1".equals(forumDesc) ||
+                        "Palmerston North".equals(forumDesc) || "Wellington 2".equals(forumDesc)) {
+                    // Venues with only morning + lunchtime (no afternoon)
+                    if (preferredTimesJson.contains("morning")) {
+                        return "10:30 AM";
+                    } else if (preferredTimesJson.contains("lunchtime")) {
+                        return "12:30 PM";
+                    } else if (preferredTimesJson.contains("afternoon") ||
+                            preferredTimesJson.contains("after work") ||
+                            preferredTimesJson.contains("night shift")) {
+                        // Afternoon preference but not available, default to lunchtime
+                        return "12:30 PM";
+                    }
+                    return "10:30 AM"; // Default for 2-session venues
+                } else {
+                    // Three-session venues (Manukau 1, Manukau 2, Auckland Central)
+                    if (preferredTimesJson.contains("morning")) {
+                        return "10:30 AM";
+                    } else if (preferredTimesJson.contains("lunchtime")) {
+                        return "12:30 PM";
+                    } else if (preferredTimesJson.contains("afternoon") ||
+                            preferredTimesJson.contains("after work") ||
+                            preferredTimesJson.contains("night shift")) {
+                        return "2:30 PM";
+                    }
                 }
             } catch (Exception e) {
                 log.error("Error parsing preferred times JSON: {}", e.getMessage());
             }
         }
 
-        // If no matching preference, show both options
-        return "10:30 AM or 12:30 PM (Please choose when you arrive)";
+        // Default based on venue type
+        if ("Napier".equals(forumDesc)) {
+            return "10:30 AM";  // Default to morning for Napier
+        } else if ("Auckland North Shore".equals(forumDesc) || "Auckland West".equals(forumDesc) ||
+                "Manukau 3".equals(forumDesc) || "Pukekohe".equals(forumDesc) || 
+                "Whangarei".equals(forumDesc) || "Christchurch 2".equals(forumDesc) ||
+                "Rotorua".equals(forumDesc) || "Hamilton 1".equals(forumDesc) ||
+                "Hamilton 2".equals(forumDesc) || "Tauranga".equals(forumDesc) ||
+                "Dunedin".equals(forumDesc) || "Invercargill".equals(forumDesc) ||
+                "New Plymouth".equals(forumDesc) || "Timaru".equals(forumDesc) ||
+                "Christchurch 1".equals(forumDesc) || "Wellington 1".equals(forumDesc) ||
+                "Palmerston North".equals(forumDesc) || "Wellington 2".equals(forumDesc)) {
+            return "10:30 AM";  // Default to morning for 2-session venues
+        }
+
+        // Default for three-session venues
+        return "10:30 AM";  // Default to morning
     }
 }

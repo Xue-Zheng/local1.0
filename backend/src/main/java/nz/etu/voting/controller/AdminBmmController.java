@@ -2624,14 +2624,15 @@ public class AdminBmmController {
                         for (String venueName : preferredVenues) {
                             // Assign to first preferred venue (simplified logic)
                             member.setAssignedVenueFinal(venueName);
-                            member.setAssignedDatetimeFinal(LocalDateTime.of(2025, 3, 15, 10, 0)); // Default datetime
+                            // 不设置默认时间，保持为null直到管理员分配
+                            // member.setAssignedDatetimeFinal(LocalDateTime.of(2025, 3, 15, 10, 0));
                             member.setBmmRegistrationStage("VENUE_ASSIGNED");
                             eventMemberRepository.save(member);
 
                             Map<String, Object> assignment = new HashMap<>();
                             assignment.put("memberId", member.getId());
                             assignment.put("venueName", venueName);
-                            assignment.put("datetime", "2025-03-15T10:00");
+                            assignment.put("datetime", null); // 不设置默认时间
                             assignments.add(assignment);
                             break;
                         }
