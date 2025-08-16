@@ -61,7 +61,7 @@ export default function BMMCheckinPage() {
         } else if (!token || !eventId || !venue) {
             // Missing required parameters
             setLoading(false);
-            toast.error('Invalid scan link. Missing required parameters.');
+            // Silently handle missing parameters without showing error to user
         }
     }, [token, eventId, venue, validateTokenAndLoadEvent]);
 
@@ -371,18 +371,18 @@ export default function BMMCheckinPage() {
                 const adminInfo = response.data.data.adminName ? ` (Scanned by: ${response.data.data.adminName})` : '';
                 toast.success(`${result.memberName} checked in successfully!${adminInfo}`);
             } else if (response.data.status === 'warning') {
-                const memberName = response.data.data?.name || 'Member';
-                const previousLocation = response.data.data?.previousCheckinLocation || 'Unknown location';
+                const memberName = response.data.data?.memberName || response.data.data?.name || 'Unknown Member';
+                const previousLocation = response.data.data?.previousCheckinLocation || response.data.data?.checkInLocation || 'Unknown location';
                 const result: ScanResult = {
                     memberName: memberName,
                     membershipNumber: response.data.data?.membershipNumber || 'Unknown',
-                    email: response.data.data?.primaryEmail || 'Unknown',
-                    checkinTime: response.data.data?.previousCheckinTime || new Date().toISOString(),
+                    email: response.data.data?.primaryEmail || response.data.data?.email || 'Unknown',
+                    checkinTime: response.data.data?.previousCheckinTime || response.data.data?.checkInTime || new Date().toISOString(),
                     venue: previousLocation,
                     status: 'already_checked_in'
                 };
                 setScanResults(prev => [result, ...prev]);
-                toast.warning(`${memberName} already checked in at ${previousLocation}`);
+                toast.warning(`⚠️ DUPLICATE SCAN: ${memberName} was already checked in at ${previousLocation}`);
             } else {
                 toast.error(response.data.message || 'Check-in failed');
             }
@@ -582,9 +582,9 @@ export default function BMMCheckinPage() {
                             </h3>
                             <div className="space-y-3 max-h-96 overflow-y-auto">
                                 {scanResults.length === 0 ? (
-                                    <p className="text-gray-500 text-center py-8">
-                                        No check-ins yet
-                                    </p>
+                                    <div className="text-center py-8">
+                                        <p className="text-gray-400 text-sm">Ready to scan QR codes</p>
+                                    </div>
                                 ) : (
                                     scanResults.map((result, index) => (
                                         <div key={index} className={`border rounded-lg p-3 ${
@@ -604,6 +604,11 @@ export default function BMMCheckinPage() {
                                             </div>
                                             <div className="text-xs text-gray-500 mt-1">
                                                 {new Date(result.checkinTime).toLocaleTimeString()} - {result.venue}
+                                                {result.status === 'already_checked_in' && (
+                                                    <div className="text-yellow-600 font-medium mt-1">
+                                                        ⚠️ DUPLICATE SCAN - Already checked in
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                     ))
